@@ -1,33 +1,77 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {NavLink} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {getUser, logoutAC, removeJwt, setLogged, setUserAndJWT} from "../redux/usersReducer";
+import {FaUserCircle, FaKey, FaDoorOpen} from "react-icons/fa";
 
 const Navbar = (props) => {
+    const dispatch = useDispatch();
+    const [adminRole, setAdminRole] = useState(false);
+
+    const logout = () => {
+        dispatch(setLogged(false));
+        dispatch(logoutAC());
+        dispatch(removeJwt());
+    };
+
+    const currentUser = useSelector(state => {
+        return state.usersReducer.currentUser;
+    });
+
+    useEffect(() => {
+        hasAdminRole();
+    }, [currentUser]);
+
+
+    const hasAdminRole = () => {
+        if (Object.entries(currentUser).length !== 0) {
+            setAdminRole(currentUser.roles.some(role => role.name === "ROLE_ADMIN"));
+        }
+    };
 
     return (
-        <div className="container">
-            <div className="container">
-                <nav className="navbar navbar-expand-sm navbar-light bg-light mb-3">
-                    <div className="container">
-                        <NavLink className="navbar-brand" to="/">Fanfic</NavLink>
-                        <div className="collapse navbar-collapse" id="navbarNav">
-                            <ul className="navbar-nav ml-auto">
+        <nav className="navbar navbar-expand-sm navbar-light bg-light mx-0 ">
+            <NavLink className="navbar-brand" to="/">Fanfic</NavLink>
+            <div className="collapse navbar-collapse" id="navbarNav">
+                <ul className="navbar-nav ml-auto">
 
-                                {!props.logged &&
-                                <li className="nav-item">
-                                    <NavLink className="nav-link" to="/register">Register</NavLink>
-                                </li>}
+                    {!props.logged &&
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/register">
+                            <span className="p-1"><FaKey/></span>Register</NavLink>
+                    </li>}
 
-                                {!props.logged && <li className="nav-item">
-                                    <NavLink className="nav-link" to="/login">Login</NavLink>
-                                </li>}
+                    {!props.logged && <li className="nav-item">
+                        <NavLink className="nav-link" to="/login">
+                            <span className="p-1"><FaDoorOpen/></span>Login</NavLink>
+                    </li>}
 
-                            </ul>
+
+                    {props.logged && <li className="nav-item dropdown">
+                        <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown">
+                            <span className="p-1"><FaUserCircle/></span>{currentUser.email}</a>
+                        <div className="dropdown-menu">
+
+                            {adminRole && <button onClick={() => {
+                            }} className="dropdown-item">
+                                <NavLink className="btn btn-sm" to="/admin-panel">
+                                    Admin panel
+                                </NavLink>
+                            </button>}
+
+                            <button onClick={logout} className="dropdown-item">
+                                <NavLink className="btn btn-sm" to="/">
+                                    Logout
+                                </NavLink>
+                            </button>
                         </div>
-                    </div>
-                </nav>
+                    </li>}
+
+                </ul>
             </div>
-            <button onClick={() => {alert(props.logged)}}>aaaa</button>
-        </div>
+
+        </nav>
+
     )
 };
 

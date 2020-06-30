@@ -1,34 +1,28 @@
 import * as axios from "axios";
 
 const instance = axios.create({
-    baseURL: "http://localhost:8080/",
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-    },
+    baseURL: "http://localhost:8080/"
 });
 
+const getHeaders = (jwt) => {
+    return {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': jwt
+    }
+};
 
 export const usersAPI = {
     login(user) {
         return instance.post("/users/login", user);
     },
-    getUsers({jwt}) {
-        return instance.get("users");
+    getUsers(jwt) {
+        return instance.get("/users", {headers: getHeaders(jwt)});
     },
-    getUserById(userId) {
-        return instance.get(`users/${userId}`)
+    getUserById(userId, jwt) {
+        return instance.get(`/users/${userId}`, {headers: getHeaders(jwt)})
     },
-    postUser({firstName, lastName, email, password}) {
-        return instance.post("users/", {
-            firstName,
-            lastName,
-            email,
-            password
-        })
-    },
-    // putFaculty(user) {
-    //     return instance.put(`users/${user.id}`,
-    //         {name: faculty.name, active: faculty.active})
-    // }
+    postUser(user) {
+        return instance.post("/users", user)
+    }
 };

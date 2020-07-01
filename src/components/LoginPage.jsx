@@ -1,21 +1,21 @@
 import React from "react";
 import {useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
-import {login, setLogged} from "../redux/usersReducer";
 import {Redirect} from "react-router-dom";
+import {login, setLogged} from "../redux/authReducer";
 
 const LoginPage = (props) => {
 
     const {register, handleSubmit, errors} = useForm();
     const dispatch = useDispatch();
     const logged = useSelector(state => {
-        return state.usersReducer.logged
+        return state.authReducer.logged
     });
 
     const onSubmit = ({email, password}) => {
         let user = {email, password};
         dispatch(login(user));
-        dispatch(setLogged(true));
+
     };
 
     return (

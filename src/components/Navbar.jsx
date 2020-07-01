@@ -1,27 +1,30 @@
 import React, {useEffect, useState} from "react";
 import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getUser, logoutAC, removeJwt, setLogged, setUserAndJWT} from "../redux/usersReducer";
-import {FaUserCircle, FaKey, FaDoorOpen} from "react-icons/fa";
+import {FaDoorOpen, FaKey, FaUserCircle} from "react-icons/fa";
+import {logoutAC, removeLocalStorageProps, setLogged} from "../redux/authReducer";
 
-const Navbar = (props) => {
+const Navbar = () => {
     const dispatch = useDispatch();
     const [adminRole, setAdminRole] = useState(false);
+
+    const logged = useSelector(state => {
+        return state.authReducer.logged
+    });
+
+    const currentUser = useSelector(state => {
+        return state.authReducer.currentUser;
+    });
 
     const logout = () => {
         dispatch(setLogged(false));
         dispatch(logoutAC());
-        dispatch(removeJwt());
+        dispatch(removeLocalStorageProps());
     };
-
-    const currentUser = useSelector(state => {
-        return state.usersReducer.currentUser;
-    });
 
     useEffect(() => {
         hasAdminRole();
     }, [currentUser]);
-
 
     const hasAdminRole = () => {
         if (Object.entries(currentUser).length !== 0) {
@@ -35,21 +38,23 @@ const Navbar = (props) => {
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav ml-auto">
 
-                    {!props.logged &&
+                    {!logged &&
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/register">
                             <span className="p-1"><FaKey/></span>Register</NavLink>
                     </li>}
 
-                    {!props.logged && <li className="nav-item">
+                    {!logged && <li className="nav-item">
                         <NavLink className="nav-link" to="/login">
                             <span className="p-1"><FaDoorOpen/></span>Login</NavLink>
                     </li>}
 
 
-                    {props.logged && <li className="nav-item dropdown">
+                    {logged && <li className="nav-item dropdown">
                         <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown">
-                            <span className="p-1"><FaUserCircle/></span>{currentUser.email}</a>
+                            <span className="p-1"><FaUserCircle/></span>
+                            {currentUser.email}
+                        </a>
                         <div className="dropdown-menu">
 
                             {adminRole && <button onClick={() => {

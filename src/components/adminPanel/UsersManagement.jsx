@@ -1,20 +1,9 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getUser, getUsers, setLogged, setUserAndJWT} from "../../redux/usersReducer";
+import {getUsers} from "../../redux/usersReducer";
 import UsersTable from "./UsersTable";
 
-const UsersManagement = () => {
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getUsers(jwt));
-    }, []);
-
-    const jwt = useSelector(state => {
-        return state.usersReducer.jwt;
-    });
-
+const UsersManagement = (props) => {
 
     return (
         <div>

@@ -1,67 +1,34 @@
 import React, {useEffect} from 'react';
 import Navbar from "./components/Navbar";
 import RegisterPage from "./components/RegisterPage";
-import {Route} from "react-router-dom";
+import {Route, withRouter} from "react-router-dom";
 import LoginPage from "./components/LoginPage";
-import {useDispatch, useSelector} from "react-redux";
-import {getUser, setLogged, setUserAndJWT} from "./redux/usersReducer";
-import Artwork from "./components/artwork/Artwork";
-import Sidebar from "./components/sidebar/Sidebar";
+import {useDispatch} from "react-redux";
 import AdminPanel from "./components/adminPanel/AdminPanel";
+import Content from "./components/content/Content";
+import {authorizeUser} from "./redux/authReducer";
 
 function App() {
 
     const dispatch = useDispatch();
-    const logged = useSelector(state => {
-        return state.usersReducer.logged
-    });
 
     useEffect(() => {
-        const userId = localStorage.getItem("userId");
-        const jwt = localStorage.getItem("jwt");
+        let userId = localStorage.getItem("userId");
+        let jwt = localStorage.getItem("jwt");
         if (userId && jwt) {
-            dispatch(setUserAndJWT(userId, jwt));
-            dispatch(setLogged(true));
-            dispatch(getUser(userId, jwt));
+            dispatch(authorizeUser(userId, jwt));
         }
     }, []);
 
     return (
         <div className="container">
-            <Navbar logged={logged}/>
-
+            <Navbar/>
             <Route path="/register" render={() => <RegisterPage/>}/>
             <Route path="/login" render={() => <LoginPage/>}/>
-
-
             <Route path="/admin-panel" render={() => <AdminPanel/>}/>
-
-
-
-            <Route exact path="/" render={() => <div>
-                <div className="d-flex justify-content-center row mx-auto">
-                    <button className="btn btn-sm btn-secondary btn-block">New artwork</button>
-                </div>
-
-                <div className="d-flex justify-content-around row">
-                    <div className="align-self-center p-4 col-10">
-
-                        <Artwork/>
-                        <Artwork/>
-                        <Artwork/>
-                        <Artwork/>
-                        <Artwork/>
-                        <Artwork/>
-
-                    </div>
-                    <div className="align-self-center p-4 col-2"><Sidebar/></div>
-                </div>
-            </div>
-            }/>
-
+            <Route exact path="/" render={() => <Content/>}/>
         </div>
-    )
-        ;
+    );
 }
 
-export default App;
+export default withRouter(App);

@@ -24,5 +24,11 @@ export const usersAPI = {
     },
     postUser(user) {
         return instance.post("/users", user)
+    },
+    putUser(user, jwt) {
+        return instance.put(`/users/${user.userId}`, user, {headers: getHeaders(jwt)})
+    },
+    deleteUser(userId, jwt) {
+        return instance.delete(`/users/${userId}`, {headers: getHeaders(jwt)})
     }
 };

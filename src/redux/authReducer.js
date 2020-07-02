@@ -9,7 +9,6 @@ const SET_LOGGED = "SET_LOGGED";
 
 let initialState = {
     logged: false,
-    userId: null,
     jwt: null,
     currentUser: {}
 };
@@ -90,18 +89,19 @@ export const login = (user) => {
     return (dispatch) => {
         usersAPI.login(user)
             .then(response => {
-                    localStorage.setItem("userId", response.headers.userid);
-                    localStorage.setItem("jwt", response.headers.authorization);
-                    dispatch(setJwt(response.headers.authorization));
-                    dispatch(getUserById(response.headers.userid, response.headers.authorization));
-                    dispatch(setLogged(true));
-                    // TODO set current user to state, refactor login logic
+                    dispatch(getUserById(response.headers.userid, response.headers.authorization))
+                        .then((user) => {
+                                dispatch(authorizeUser(user.userId, response.headers.authorization))
+                                localStorage.setItem("userId", response.headers.userid);
+                                localStorage.setItem("jwt", response.headers.authorization);
+                            }
+                        );
                 }
             )
     };
 };
 
-export const authorizeUser = (userId, jwt) => (dispatch) =>{
+export const authorizeUser = (userId, jwt) => (dispatch) => {
     let promise = dispatch(getUserById(userId, jwt));
     promise.then(user => {
         dispatch(setCurrentUser(user));

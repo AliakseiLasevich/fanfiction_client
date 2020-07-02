@@ -1,9 +1,12 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useTable} from 'react-table'
 import {deleteUser, getUsers, putUser} from "../../redux/usersReducer";
 
 const UsersTable = () => {
+    const dispatch = useDispatch();
+
+    const [users, setUsers] = useState();
 
     const jwt = useSelector(state => {
         return state.authReducer.jwt;
@@ -13,18 +16,25 @@ const UsersTable = () => {
         return state.usersReducer.allUsers;
     });
 
-    useEffect(() => {
-        dispatch(getUsers(jwt));
-    }, [jwt, allUsers]);
-
-    const dispatch = useDispatch();
-
     const deleteUserById = (userId, jwt) => {
         dispatch(deleteUser(userId, jwt));
     };
 
-    const blockUser = (user, jwt) => {
+    const updateUser = (user, jwt) => {
         dispatch(putUser(user, jwt));
+        dispatch(getUsers(jwt));
+        setUsers(allUsers);
+    };
+
+    useEffect(() => {
+        dispatch(getUsers(jwt));
+    }, [jwt, users]);
+
+
+    const hasAdminRole = (user) => {
+        if (Object.entries(user).length !== 0) {
+            return user.roles.some(role => role.name === "ROLE_ADMIN");
+        }
     };
 
 
@@ -47,16 +57,22 @@ const UsersTable = () => {
                 accessor: "email"
             },
             {
-                Header: "Active",
-                accessor: user => user.nonBlocked.toString()
+                Header: "Admin",
+                accessor: user => hasAdminRole(user) ?
+                    <button className="btn-success"
+                            onClick={() => updateUser({...user, roles: ["ROLE_USER"]}, jwt)}>Admin</button> :
+                    <button className="btn-secondary"
+                            onClick={() => updateUser({
+                                ...user, roles: [...user.roles, "ROLE_ADMIN"]
+                            }, jwt)}>User</button>
             },
             {
                 Header: "Block",
                 accessor: user => user.nonBlocked ?
                     <button className="btn-warning"
-                            onClick={() => blockUser({...user, nonBlocked: false}, jwt)}>Block</button> :
+                            onClick={() => updateUser({...user, nonBlocked: false}, jwt)}>Block</button> :
                     <button className="btn-info"
-                            onClick={() => blockUser({...user, nonBlocked: true}, jwt)}>UnBlock</button>
+                            onClick={() => updateUser({...user, nonBlocked: true}, jwt)}>UnBlock</button>
             },
             {
                 Header: "Delete",
@@ -64,7 +80,7 @@ const UsersTable = () => {
                                           onClick={() => deleteUserById(user.userId, jwt)}>Delete</button>
             },
 
-        ], [jwt]);
+        ], [deleteUserById, jwt, updateUser]);
 
     return (
         <div>

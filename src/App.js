@@ -7,6 +7,7 @@ import {useDispatch} from "react-redux";
 import AdminPanel from "./components/adminPanel/AdminPanel";
 import Content from "./components/content/Content";
 import {authorizeUser} from "./redux/authReducer";
+import NewArtwork from "./components/content/artwork/form/NewArtwork";
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/login" render={() => <LoginPage/>}/>
             <Route path="/admin-panel" render={() => <AdminPanel/>}/>
             <Route exact path="/" render={() => <Content/>}/>
+            <Route path="/new-artwork" render={() => <NewArtwork/>}/>
         </div>
     );
 }

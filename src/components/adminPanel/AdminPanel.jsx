@@ -7,7 +7,6 @@ const AdminPanel = (props) => {
 
     return (
         <div>
-
             <NavLink to="/admin-panel/users-management">
                 <button className="btn btn-success btn-lg" type="button">
                     <FaUserCog/> Users management

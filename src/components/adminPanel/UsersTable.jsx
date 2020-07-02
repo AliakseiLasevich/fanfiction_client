@@ -1,30 +1,23 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useTable} from 'react-table'
 import {deleteUser, getUsers, putUser} from "../../redux/usersReducer";
 
-const UsersTable = (props) => {
-
-    const dispatch = useDispatch();
-
-    const allUsers = useSelector(state => {
-        return state.usersReducer.allUsers;
-    });
-
-    const userId = useSelector(state => {
-        return state.authReducer.userId;
-    });
+const UsersTable = () => {
 
     const jwt = useSelector(state => {
         return state.authReducer.jwt;
     });
 
+    const allUsers = useSelector(state => {
+        return state.usersReducer.allUsers;
+    });
 
     useEffect(() => {
-        dispatch(getUsers(props.jwt));
-        console.log(props)
-    }, [allUsers]);
+        dispatch(getUsers(jwt));
+    }, [jwt, allUsers]);
 
+    const dispatch = useDispatch();
 
     const deleteUserById = (userId, jwt) => {
         dispatch(deleteUser(userId, jwt));
@@ -59,11 +52,11 @@ const UsersTable = (props) => {
             },
             {
                 Header: "Block",
-                accessor: user => <button className="btn-warning"
-                                          onClick={() => blockUser({
-                                              ...user,
-                                              nonBlocked: false
-                                          }, jwt)}>Block</button>
+                accessor: user => user.nonBlocked ?
+                    <button className="btn-warning"
+                            onClick={() => blockUser({...user, nonBlocked: false}, jwt)}>Block</button> :
+                    <button className="btn-info"
+                            onClick={() => blockUser({...user, nonBlocked: true}, jwt)}>UnBlock</button>
             },
             {
                 Header: "Delete",
@@ -71,7 +64,7 @@ const UsersTable = (props) => {
                                           onClick={() => deleteUserById(user.userId, jwt)}>Delete</button>
             },
 
-        ], []);
+        ], [jwt]);
 
     return (
         <div>

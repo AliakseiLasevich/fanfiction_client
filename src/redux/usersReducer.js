@@ -71,6 +71,7 @@ export const postUser = (user) => {
 };
 
 export const putUser = (user, jwt) => {
+    debugger
     return (dispatch) => {
         usersAPI.putUser(user, jwt)
             .then(response => {

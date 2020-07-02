@@ -37,6 +37,17 @@ const UsersTable = () => {
         }
     };
 
+    const addAdminRole = (user) => {
+        user.rolesNames = user.roles.map(role => role.name);
+        updateUser({...user, rolesNames: [...user.rolesNames, "ROLE_ADMIN"]}, jwt)
+    };
+
+    const removeAdminRole = (user) => {
+        user.rolesNames = user.roles
+            .map(role => role.name)
+            .filter(role => role !== "ROLE_ADMIN");
+        updateUser(user, jwt);
+    };
 
     const columns = React.useMemo(
         () => [
@@ -60,11 +71,9 @@ const UsersTable = () => {
                 Header: "Admin",
                 accessor: user => hasAdminRole(user) ?
                     <button className="btn-success"
-                            onClick={() => updateUser({...user, roles: ["ROLE_USER"]}, jwt)}>Admin</button> :
+                            onClick={() => removeAdminRole(user)}>Admin</button> :
                     <button className="btn-secondary"
-                            onClick={() => updateUser({
-                                ...user, roles: [...user.roles, "ROLE_ADMIN"]
-                            }, jwt)}>User</button>
+                            onClick={() => addAdminRole(user)}>User</button>
             },
             {
                 Header: "Block",

@@ -57,6 +57,13 @@ const Navbar = () => {
                         </a>
                         <div className="dropdown-menu">
 
+                            <button onClick={() => {
+                            }} className="dropdown-item">
+                                <NavLink className="btn btn-sm" to="/dashboard">
+                                    Dashboard
+                                </NavLink>
+                            </button>
+
                             {adminRole && <button onClick={() => {
                             }} className="dropdown-item">
                                 <NavLink className="btn btn-sm" to="/admin-panel">

@@ -1,57 +1,51 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import ReactTags from 'react-tag-autocomplete'
-import style from './TagManager.module.css';
+import React from 'react';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
 
-export default class TagManager extends React.Component {
-    constructor(props) {
-        super(props)
 
-        this.state = {
-            tags: [
-                {id: 1, name: "Apples"},
-                {id: 2, name: "Pears"}
-            ],
-            suggestions: [
-                {id: 3, name: "Bananas"},
-                {id: 4, name: "Mangos"},
-                {id: 5, name: "Lemons"},
-                {id: 6, name: "Apricots"}
-            ]
+const TagManager = (props) => {
+
+    const handleKeyDown = event => {
+        switch (event.key) {
+            case ",":
+            case " ": {
+                event.preventDefault();
+                event.stopPropagation();
+                if (event.target.value.length > 0) {
+                    props.setTags([...props.tags, event.target.value]);
+                }
+                break;
+            }
+            default:
         }
-
-        this.reactTags = React.createRef()
-    }
-
-    styles = {
-        selectedTag: style.selectedTag,
-        suggestions: style.suggestion,
     };
 
-    onDelete(i) {
-        const tags = this.state.tags.slice(0)
-        tags.splice(i, 1)
-        this.setState({tags})
-    }
-
-    onAddition(tag) {
-        const tags = [].concat(this.state.tags, tag)
-        this.setState({tags})
-    }
-
-    render() {
-        return (
-            <ReactTags
-                ref={this.reactTags}
-                tags={this.state.tags}
-                suggestions={this.state.suggestions}
-                onDelete={this.onDelete.bind(this)}
-                onAddition={this.onAddition.bind(this)}
-                allowNew={true}
-                autoresize={false}
-                classNames={this.styles}
-                delimiters={["Enter", ","]}
+    return (
+        <div style={{width: 500}}>
+            <Autocomplete
+                multiple
+                freeSolo
+                id="tags-outlined"
+                options={props.allTags}
+                getOptionLabel={option => option.tag || option}
+                value={props.tags}
+                onChange={(event, newValue) => props.setTags(newValue)}
+                filterSelectedOptions
+                renderInput={params => {
+                    params.inputProps.onKeyDown = handleKeyDown;
+                    return (
+                        <TextField
+                            {...params}
+                            variant="outlined"
+                            label="Input tags here"
+                            margin="normal"
+                            fullWidth
+                        />
+                    );
+                }}
             />
-        )
-    }
-}
+        </div>
+    );
+};
+
+export default TagManager;

@@ -1,16 +1,23 @@
 import * as React from "react";
+import {useState} from "react";
 import ReactMde from "react-mde";
 import * as Showdown from "showdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import {useForm} from "react-hook-form";
-import {login} from "../../../../redux/authReducer";
 import TagManager from "./TagManager";
 
 
 const NewArtwork = () => {
+    const allTags = [
+        {tag: "The Shawshank Redemption"},
+        {tag: "The Godfather"},
+        {tag: "The Godfather: Part II"},
+        {tag: "The Dark Knight"},
+    ];
 
-    const [value, setValue] = React.useState("**Type here**");
-    const [selectedTab, setSelectedTab] = React.useState("write");
+    const [value, setValue] = useState("**Type here**");
+    const [selectedTab, setSelectedTab] = useState("write");
+    const [tags, setTags] = React.useState([]);
     const converter = new Showdown.Converter({
         tables: true,
         simplifiedAutoLink: true,
@@ -54,7 +61,9 @@ const NewArtwork = () => {
 
             <label htmlFor="tags">Tags</label>
             <div className="mb-4">
-                <TagManager/>
+                <TagManager tags={tags}
+                            setTags={setTags}
+                            allTags={allTags}/>
             </div>
 
             <ReactMde
@@ -68,9 +77,12 @@ const NewArtwork = () => {
                     Promise.resolve(converter.makeHtml(markdown))
                 }
             />
-            <div className="text-center m-4"><button className="btn btn-success w-25">Submit</button></div>
+            <div className="text-center m-4">
+                <button className="btn btn-success w-25">Submit</button>
+            </div>
         </form>
     )
 };
+
 
 export default NewArtwork;

@@ -1,13 +1,14 @@
 import * as React from "react";
-import {useState} from "react";
-import ReactMde from "react-mde";
-import * as Showdown from "showdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import {useForm} from "react-hook-form";
 import TagManager from "./TagManager";
+import NewChapter from "./NewChapter";
+import {useReducer} from "react";
 
 
-const NewArtwork = () => {
+const NewArtwork = (props) => {
+
+    //TODO request all tags from server
     const allTags = [
         {tag: "The Shawshank Redemption"},
         {tag: "The Godfather"},
@@ -15,20 +16,102 @@ const NewArtwork = () => {
         {tag: "The Dark Knight"},
     ];
 
-    const [value, setValue] = useState("**Type here**");
-    const [selectedTab, setSelectedTab] = useState("write");
     const [tags, setTags] = React.useState([]);
-    const converter = new Showdown.Converter({
-        tables: true,
-        simplifiedAutoLink: true,
-        strikethrough: true,
-        tasklists: true
-    });
 
     const {register, handleSubmit, errors} = useForm();
     const onSubmit = (artwork) => {
         alert("submit")
     };
+
+    const initialState = {
+        chapters: [
+            {
+                index: 0,
+                title: null,
+                content: null,
+                imgUrl: null
+            }
+        ]
+    };
+    let chaptersReducer = (state, action) => {
+        switch (action.type) {
+
+            case 'addChapter':
+                return {
+                    ...state, chapters: [...state.chapters, action.chapter]
+                };
+
+            case 'removeChapter':
+                return {
+                    ...state, chapters: state.chapters.filter(chapter => chapter.index !== action.index)
+                };
+
+            case 'addImageUrl':
+                let chapterToEdit = state.chapters[action.chapterIndex];
+                let editedChapter = {...chapterToEdit, imgUrl: action.imgUrl}
+                let newState = {
+                    ...state,
+                    chapters:
+                        [...state.chapters.slice(0, action.chapterIndex),
+                            editedChapter,
+                            ...state.chapters.slice(action.chapterIndex + 1)]
+                };
+                return newState;
+
+            case "addTitle":
+                let toEdit = state.chapters[action.chapterIndex];
+                let edited = {...toEdit, title: action.title};
+                return {
+                    ...state,
+                    chapters:
+                        [...state.chapters.slice(0, action.chapterIndex),
+                            edited,
+                            ...state.chapters.slice(action.chapterIndex + 1)]
+                };
+
+            case "addContent":
+                let toAddContent = state.chapters[action.chapterIndex];
+                let withContent = {...toAddContent, content: action.content};
+
+                return {
+                    ...state,
+                    chapters:
+                        [...state.chapters.slice(0, action.chapterIndex),
+                            withContent,
+                            ...state.chapters.slice(action.chapterIndex + 1)]
+                };
+
+            default:
+                throw new Error("Error in useReducer");
+        }
+    };
+
+    const [state, dispatch] = useReducer(chaptersReducer, initialState);
+
+    let removeChapterAC = (index) => {
+        dispatch({type: "removeChapter", index})
+    };
+
+    let addTitleAC = (chapterIndex, title) => {
+        dispatch({type: "addTitle", title, chapterIndex})
+    };
+
+    let addContentAC = (chapterIndex, content) => {
+        dispatch({type: "addContent", content, chapterIndex});
+        console.log(state)
+    };
+
+    let addImageUrlAC = (chapterIndex, imgUrl) => {
+        dispatch({type: "addImageUrl", chapterIndex, imgUrl})
+    };
+
+    let chapterEditorComponents = state.chapters.map(chapter => <NewChapter key={chapter.index}
+                                                                            index={chapter.index}
+                                                                            removeChapterAC={removeChapterAC}
+                                                                            addImageUrlAC={addImageUrlAC}
+                                                                            addTitleAC={addTitleAC}
+                                                                            content={chapter.content}
+                                                                            addContentAC={addContentAC}/>);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="p-3 m-3">
@@ -59,6 +142,7 @@ const NewArtwork = () => {
                 <div className="text-danger">  {errors.genre && <span>{errors.genre.message}</span>}</div>
             </div>
 
+
             <label htmlFor="tags">Tags</label>
             <div className="mb-4">
                 <TagManager tags={tags}
@@ -66,17 +150,23 @@ const NewArtwork = () => {
                             allTags={allTags}/>
             </div>
 
-            <ReactMde
-                toolbarCommands={[["header"], ["bold", "italic", "strikethrough"], ["quote"]]}
-                loadingPreview={true}
-                value={value}
-                onChange={setValue}
-                selectedTab={selectedTab}
-                onTabChange={setSelectedTab}
-                generateMarkdownPreview={markdown =>
-                    Promise.resolve(converter.makeHtml(markdown))
-                }
-            />
+            {chapterEditorComponents}
+
+            <div className="text-center mt-2">
+                <div className="btn btn-secondary" onClick={() => {
+                    dispatch({
+                        type: "addChapter", chapter: {
+                            index: state.chapters.length,
+                            title: null,
+                            content: null,
+                            imgUrl: null
+                        }
+                    })
+                }}>
+                    Add chapter
+                </div>
+            </div>
+
             <div className="text-center m-4">
                 <button className="btn btn-success w-25">Submit</button>
             </div>

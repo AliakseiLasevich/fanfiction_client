@@ -25,9 +25,6 @@ const NewChapter = (props) => {
         <div className="border rounded m-2 px-3 py-2">
             <span><h3>Chapter# {props.index + 1}</h3></span>
 
-
-            <h3 className="text-center">New artwork</h3>
-
             <div className="form-group">
                 <label htmlFor="name">Title</label>
                 <input className="form-control" onChange={onTitleChange} type="text" name="title"/>

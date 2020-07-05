@@ -1,14 +1,46 @@
-import React from "react";
-import {FaTrashAlt, FaRegImage} from "react-icons/fa";
+import React, {useState} from "react";
+import {FaRegImage, FaTrashAlt} from "react-icons/fa";
+import Dropzone from "react-dropzone";
+import * as axios from "axios";
 
 const ChapterTools = (props) => {
 
+    const [image, setImage] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const uploadImage = async files => {
+        setLoading(true);
+        const data = new FormData();
+        data.append('file', files[0]);
+        data.append('upload_preset', 'fanfic');
+        axios.post("https://api.cloudinary.com/v1_1/du6tyqkom/image/upload", data)
+            .then(response => {
+                const uploadedFile = response.data.secure_url;
+                setImage(uploadedFile);
+            })
+            .then(setLoading(false));
+    };
+
     return (
         <div className="d-flex justify-content-center">
-            <div className="btn btn-warning m-2 "><span className="mr-1"><FaRegImage/></span>Drag picture here</div>
+
+            <Dropzone onDrop={acceptedFiles => uploadImage(acceptedFiles)}>
+                {({getRootProps, getInputProps}) => (
+                    <section>
+                        <div {...getRootProps()} className="d-inline-block">
+                            <div className="btn btn-warning m-2"><span className="mr-1"><FaRegImage/></span>
+                                <input {...getInputProps()}  />
+                                {loading ? "Loading" : "Drag image here"}
+                            </div>
+                        </div>
+                    </section>
+                )}
+            </Dropzone>
+
             <div className="btn btn-warning m-2" onClick={() => props.removeChapterAC(props.index)}><span
                 className="mr-1"><FaTrashAlt/></span>Remove chapter
             </div>
+            <img src={image}/>
         </div>
     )
 };

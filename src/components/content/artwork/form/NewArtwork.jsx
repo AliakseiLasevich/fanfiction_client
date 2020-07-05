@@ -1,9 +1,9 @@
 import * as React from "react";
+import {useReducer} from "react";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import {useForm} from "react-hook-form";
 import TagManager from "./TagManager";
 import NewChapter from "./NewChapter";
-import {useReducer} from "react";
 
 
 const NewArtwork = (props) => {
@@ -48,15 +48,14 @@ const NewArtwork = (props) => {
 
             case 'addImageUrl':
                 let chapterToEdit = state.chapters[action.chapterIndex];
-                let editedChapter = {...chapterToEdit, imgUrl: action.imgUrl}
-                let newState = {
+                let editedChapter = {...chapterToEdit, imgUrl: action.imgUrl};
+                return {
                     ...state,
                     chapters:
                         [...state.chapters.slice(0, action.chapterIndex),
                             editedChapter,
                             ...state.chapters.slice(action.chapterIndex + 1)]
                 };
-                return newState;
 
             case "addTitle":
                 let toEdit = state.chapters[action.chapterIndex];
@@ -99,6 +98,7 @@ const NewArtwork = (props) => {
     let addContentAC = (chapterIndex, content) => {
         dispatch({type: "addContent", content, chapterIndex});
         console.log(state)
+        console.log(tags)
     };
 
     let addImageUrlAC = (chapterIndex, imgUrl) => {
@@ -170,6 +170,7 @@ const NewArtwork = (props) => {
             <div className="text-center m-4">
                 <button className="btn btn-success w-25">Submit</button>
             </div>
+
         </form>
     )
 };

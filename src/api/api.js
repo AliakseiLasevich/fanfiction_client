@@ -32,3 +32,10 @@ export const usersAPI = {
         return instance.delete(`/users/${userId}`, {headers: getHeaders(jwt)})
     }
 };
+
+export const cloudinaryApi = {
+
+    upload(data) {
+        return axios.post("https://api.cloudinary.com/v1_1/du6tyqkom/image/upload", data)
+    }
+};

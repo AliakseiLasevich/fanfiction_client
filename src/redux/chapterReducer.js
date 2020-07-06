@@ -1,6 +1,11 @@
+import {cloudinaryApi, usersAPI} from "../api/api";
+import {getUserById} from "./usersReducer";
+import {authorizeUser} from "./authReducer";
+
 const ADD_CHAPTER = "ADD_CHAPTER";
 const REMOVE_CHAPTER = "REMOVE_CHAPTER";
 const ADD_IMAGE_URL = "ADD_IMAGE_URL";
+const REMOVE_IMAGE = "REMOVE_IMAGE";
 const ADD_TITLE = "ADD_TITLE";
 const ADD_CONTENT = "ADD_CONTENT";
 const RECALCULATE_CHAPTERS_INDEXES = "RECALCULATE_CHAPTERS_INDEXES";
@@ -46,8 +51,8 @@ const chapterReducer = (state = initialState, action) => {
             };
 
         case ADD_IMAGE_URL:
-            let chapterToEdit = state.chapters[action.chapterIndex];
-            let editedChapter = {...chapterToEdit, imgUrl: action.imgUrl};
+            let chapterToAddImageUrl = {...state.chapters[action.chapterIndex]};
+            let editedChapter = {...chapterToAddImageUrl, imgUrl: action.imgUrl};
             return {
                 ...state,
                 chapters:
@@ -55,6 +60,18 @@ const chapterReducer = (state = initialState, action) => {
                         editedChapter,
                         ...state.chapters.slice(action.chapterIndex + 1)]
             };
+
+        case REMOVE_IMAGE:
+            let chapterToRemoveImageUrl = {...state.chapters[action.chapterIndex]};
+            chapterToRemoveImageUrl.imgUrl=null;
+            return {
+                ...state,
+                chapters:
+                    [...state.chapters.slice(0, action.chapterIndex),
+                        chapterToRemoveImageUrl,
+                        ...state.chapters.slice(action.chapterIndex + 1)]
+            };
+
 
         case ADD_TITLE:
             let toEdit = state.chapters[action.chapterIndex];
@@ -128,6 +145,26 @@ export const addImageUrlAC = (chapterIndex, imgUrl) => {
     return {
         type: ADD_IMAGE_URL, chapterIndex, imgUrl
     }
+};
+
+export const removeImageAc = (chapterIndex) => {
+    return {
+        type: REMOVE_IMAGE, chapterIndex
+    }
+};
+
+
+export const uploadImageToChapter = (files, index) => {
+    const data = new FormData();
+    data.append('file', files[0]);
+    data.append('upload_preset', 'fanfic');
+    return (dispatch) => {
+        cloudinaryApi.upload(data)
+            .then(response => {
+                dispatch(addImageUrlAC(index, response.data.secure_url))
+            });
+
+    };
 };
 
 export default chapterReducer;

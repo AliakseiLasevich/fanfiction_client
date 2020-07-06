@@ -1,27 +1,14 @@
-import React, {useState} from "react";
+import React from "react";
 import {FaRegImage, FaTrashAlt} from "react-icons/fa";
 import Dropzone from "react-dropzone";
-import * as axios from "axios";
-import {useDispatch} from "react-redux";
-import {recalculateChaptersIndexes, removeChapterAC, removeChapterAndIndex} from "../../../../redux/chapterReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {removeChapterAndIndex, removeImageAc, uploadImageToChapter} from "../../../../redux/chapterReducer";
 
 const ChapterTools = (props) => {
 
-    const [image, setImage] = useState('');
-    const [loading, setLoading] = useState(false);
-
-    const uploadImage = async files => {
-        setLoading(true);
-        const data = new FormData();
-        data.append('file', files[0]);
-        data.append('upload_preset', 'fanfic');
-        axios.post("https://api.cloudinary.com/v1_1/du6tyqkom/image/upload", data)
-            .then(response => {
-                const uploadedFile = response.data.secure_url;
-                setImage(uploadedFile);
-            })
-            .then(setLoading(false));
-    };
+    const imgUrl = useSelector(state => {
+        return state.chapterReducer.chapters[props.index].imgUrl
+    });
 
     const dispatch = useDispatch();
 
@@ -29,14 +16,21 @@ const ChapterTools = (props) => {
         dispatch(removeChapterAndIndex(index));
     };
 
+    const uploadImage = (image) => {
+        dispatch(uploadImageToChapter(image, props.index))
+    };
+
+    const removeImage = () => {
+      dispatch(removeImageAc(props.index))
+    };
 
     return (
         <>
-            {image &&
+            {imgUrl &&
             <div className="d-block align-middle btn" onClick={() => {
-                setImage(null)
+                removeImage()
             }}>
-                <img src={image}/>
+                <img src={imgUrl}/>
                 <p>Click to remove</p>
             </div>}
 
@@ -47,7 +41,7 @@ const ChapterTools = (props) => {
                             <div {...getRootProps()} className="d-inline-block">
                                 <div className="btn btn-warning m-2"><span className="mr-1"><FaRegImage/></span>
                                     <input {...getInputProps()}  />
-                                    {loading ? "Loading" : "Drag image here"}
+                                    "Drag image here"
                                 </div>
                             </div>
                         </section>

@@ -1,9 +1,10 @@
 import * as React from "react";
-import {useReducer} from "react";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import {useForm} from "react-hook-form";
 import TagManager from "./TagManager";
 import NewChapter from "./NewChapter";
+import {useDispatch, useSelector} from "react-redux";
+import {addChapterAC} from "../../../../redux/chapterReducer";
 
 
 const NewArtwork = (props) => {
@@ -23,95 +24,19 @@ const NewArtwork = (props) => {
         alert("submit")
     };
 
-    const initialState = {
-        chapters: [
-            {
-                index: 0,
-                title: null,
-                content: null,
-                imgUrl: null
-            }
-        ]
-    };
-    let chaptersReducer = (state, action) => {
-        switch (action.type) {
+    const dispatch = useDispatch();
 
-            case 'addChapter':
-                return {
-                    ...state, chapters: [...state.chapters, action.chapter]
-                };
-
-            case 'removeChapter':
-                return {
-                    ...state, chapters: state.chapters.filter(chapter => chapter.index !== action.index)
-                };
-
-            case 'addImageUrl':
-                let chapterToEdit = state.chapters[action.chapterIndex];
-                let editedChapter = {...chapterToEdit, imgUrl: action.imgUrl};
-                return {
-                    ...state,
-                    chapters:
-                        [...state.chapters.slice(0, action.chapterIndex),
-                            editedChapter,
-                            ...state.chapters.slice(action.chapterIndex + 1)]
-                };
-
-            case "addTitle":
-                let toEdit = state.chapters[action.chapterIndex];
-                let edited = {...toEdit, title: action.title};
-                return {
-                    ...state,
-                    chapters:
-                        [...state.chapters.slice(0, action.chapterIndex),
-                            edited,
-                            ...state.chapters.slice(action.chapterIndex + 1)]
-                };
-
-            case "addContent":
-                let toAddContent = state.chapters[action.chapterIndex];
-                let withContent = {...toAddContent, content: action.content};
-
-                return {
-                    ...state,
-                    chapters:
-                        [...state.chapters.slice(0, action.chapterIndex),
-                            withContent,
-                            ...state.chapters.slice(action.chapterIndex + 1)]
-                };
-
-            default:
-                throw new Error("Error in useReducer");
-        }
+    const addChapter = () => {
+        dispatch(addChapterAC())
     };
 
-    const [state, dispatch] = useReducer(chaptersReducer, initialState);
+    const allChapters = useSelector(state => {
+        return state.chapterReducer.chapters
+    });
 
-    let removeChapterAC = (index) => {
-        dispatch({type: "removeChapter", index})
-    };
 
-    let addTitleAC = (chapterIndex, title) => {
-        dispatch({type: "addTitle", title, chapterIndex})
-    };
-
-    let addContentAC = (chapterIndex, content) => {
-        dispatch({type: "addContent", content, chapterIndex});
-        console.log(state)
-        console.log(tags)
-    };
-
-    let addImageUrlAC = (chapterIndex, imgUrl) => {
-        dispatch({type: "addImageUrl", chapterIndex, imgUrl})
-    };
-
-    let chapterEditorComponents = state.chapters.map(chapter => <NewChapter key={chapter.index}
-                                                                            index={chapter.index}
-                                                                            removeChapterAC={removeChapterAC}
-                                                                            addImageUrlAC={addImageUrlAC}
-                                                                            addTitleAC={addTitleAC}
-                                                                            content={chapter.content}
-                                                                            addContentAC={addContentAC}/>);
+    let chapterEditorComponents = allChapters.map(chapter => <NewChapter key={chapter.index}
+                                                                         index={chapter.index}/>);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="p-3 m-3">
@@ -153,16 +78,7 @@ const NewArtwork = (props) => {
             {chapterEditorComponents}
 
             <div className="text-center mt-2">
-                <div className="btn btn-secondary" onClick={() => {
-                    dispatch({
-                        type: "addChapter", chapter: {
-                            index: state.chapters.length,
-                            title: null,
-                            content: null,
-                            imgUrl: null
-                        }
-                    })
-                }}>
+                <div className="btn btn-secondary" onClick={() => addChapter()}>
                     Add chapter
                 </div>
             </div>

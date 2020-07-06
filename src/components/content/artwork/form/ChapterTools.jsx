@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import {FaRegImage, FaTrashAlt} from "react-icons/fa";
 import Dropzone from "react-dropzone";
 import * as axios from "axios";
+import {useDispatch} from "react-redux";
+import {recalculateChaptersIndexes, removeChapterAC, removeChapterAndIndex} from "../../../../redux/chapterReducer";
 
 const ChapterTools = (props) => {
 
@@ -21,27 +23,43 @@ const ChapterTools = (props) => {
             .then(setLoading(false));
     };
 
+    const dispatch = useDispatch();
+
+    const removeChapter = (index) => {
+        dispatch(removeChapterAndIndex(index));
+    };
+
+
     return (
-        <div className="d-flex justify-content-center">
+        <>
+            {image &&
+            <div className="d-block align-middle btn" onClick={() => {
+                setImage(null)
+            }}>
+                <img src={image}/>
+                <p>Click to remove</p>
+            </div>}
 
-            <Dropzone onDrop={acceptedFiles => uploadImage(acceptedFiles)}>
-                {({getRootProps, getInputProps}) => (
-                    <section>
-                        <div {...getRootProps()} className="d-inline-block">
-                            <div className="btn btn-warning m-2"><span className="mr-1"><FaRegImage/></span>
-                                <input {...getInputProps()}  />
-                                {loading ? "Loading" : "Drag image here"}
+            <div className="d-flex justify-content-center">
+                <Dropzone onDrop={acceptedFiles => uploadImage(acceptedFiles)}>
+                    {({getRootProps, getInputProps}) => (
+                        <section>
+                            <div {...getRootProps()} className="d-inline-block">
+                                <div className="btn btn-warning m-2"><span className="mr-1"><FaRegImage/></span>
+                                    <input {...getInputProps()}  />
+                                    {loading ? "Loading" : "Drag image here"}
+                                </div>
                             </div>
-                        </div>
-                    </section>
-                )}
-            </Dropzone>
+                        </section>
+                    )}
+                </Dropzone>
 
-            <div className="btn btn-warning m-2" onClick={() => props.removeChapterAC(props.index)}><span
-                className="mr-1"><FaTrashAlt/></span>Remove chapter
+                <div className="btn btn-warning m-2" onClick={() => removeChapter(props.index)}><span
+                    className="mr-1"><FaTrashAlt/></span>Remove chapter
+                </div>
+
             </div>
-            <img src={image}/>
-        </div>
+        </>
     )
 };
 

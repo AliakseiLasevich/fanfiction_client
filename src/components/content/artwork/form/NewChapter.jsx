@@ -2,9 +2,12 @@ import React, {useState} from "react";
 import ReactMde from "react-mde";
 import * as Showdown from "showdown";
 import ChapterTools from "./ChapterTools";
+import {useDispatch, useSelector} from "react-redux";
+import {addContentAC, addTitleAC} from "../../../../redux/chapterReducer";
 
 const NewChapter = (props) => {
 
+    const dispatch = useDispatch();
     const [selectedTab, setSelectedTab] = useState("write");
     const converter = new Showdown.Converter({
         tables: true,
@@ -14,12 +17,17 @@ const NewChapter = (props) => {
     });
 
     const onTitleChange = (e) => {
-        props.addTitleAC(props.index, e.target.value)
+        dispatch(addTitleAC(props.index, e.target.value));
     };
 
     const onContentChange = (content) => {
-        props.addContentAC(props.index, content)
+        dispatch(addContentAC(props.index, content));
     };
+
+    const content = useSelector(state => {
+        return state.chapterReducer.content;
+    });
+
 
     return (
         <div className="border rounded m-2 px-3 py-2">
@@ -33,7 +41,7 @@ const NewChapter = (props) => {
             <ReactMde
                 toolbarCommands={[["header"], ["bold", "italic", "strikethrough"], ["quote"]]}
                 loadingPreview={true}
-                value={props.content}
+                value={content}
                 onChange={onContentChange}
                 selectedTab={selectedTab}
                 onTabChange={setSelectedTab}
@@ -42,7 +50,8 @@ const NewChapter = (props) => {
                 }
             />
             <div className="text-center mt-2">
-                <ChapterTools removeChapterAC={props.removeChapterAC} index={props.index}/>
+                <ChapterTools
+                    index={props.index}/>
             </div>
         </div>
     )

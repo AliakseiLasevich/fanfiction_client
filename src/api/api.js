@@ -12,6 +12,9 @@ const getHeaders = (jwt) => {
     }
 };
 
+let userId = localStorage.getItem("userId");
+let jwt = localStorage.getItem("jwt");
+
 export const usersAPI = {
     login(user) {
         return instance.post("/users/login", user);
@@ -33,8 +36,19 @@ export const usersAPI = {
     }
 };
 
-export const cloudinaryApi = {
 
+export const artworkAPI = {
+    postArtwork(artwork) {
+        return instance.post(`/users/${userId}/artworks`, artwork, {headers: getHeaders(jwt)})
+    },
+    getArtworksPreviews(page = 1, limit = 4) {
+        return instance.get(`/artworksPreviews?page=${page}&limit=${limit}`)
+    }
+
+
+};
+
+export const cloudinaryApi = {
     upload(data) {
         return axios.post("https://api.cloudinary.com/v1_1/du6tyqkom/image/upload", data)
     }

@@ -33,10 +33,19 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="navbar navbar-expand-sm navbar-light bg-light mx-0 ">
-            <NavLink className="navbar-brand" to="/">Fanfic</NavLink>
+        <nav className="navbar navbar-expand-sm navbar-light bg-light row">
+            <NavLink className="navbar-brand col" to="/">Fanfic</NavLink>
+
             <div className="collapse navbar-collapse" id="navbarNav">
-                <ul className="navbar-nav ml-auto">
+
+                <div className="col">
+                    <form >
+                        <input type="text" placeholder="Search"/>
+
+                    </form>
+                </div>
+
+                <ul className="navbar-nav ml-auto ">
 
                     {!logged &&
                     <li className="nav-item">

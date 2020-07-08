@@ -3,7 +3,7 @@ import ReactMde from "react-mde";
 import * as Showdown from "showdown";
 import ChapterTools from "./ChapterTools";
 import {useDispatch, useSelector} from "react-redux";
-import {addContentAC, addTitleAC} from "../../../../redux/chapterReducer";
+import {addContentAC, addTitleAC} from "../../../../redux/artworkFormReducer";
 
 const NewChapter = (props) => {
 
@@ -25,7 +25,7 @@ const NewChapter = (props) => {
     };
 
     const content = useSelector(state => {
-        return state.chapterReducer.content;
+        return state.artworkFormReducer.content;
     });
 
 
@@ -49,6 +49,7 @@ const NewChapter = (props) => {
                     Promise.resolve(converter.makeHtml(markdown))
                 }
             />
+
             <div className="text-center mt-2">
                 <ChapterTools
                     index={props.index}/>

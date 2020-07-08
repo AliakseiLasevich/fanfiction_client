@@ -4,39 +4,40 @@ import {useForm} from "react-hook-form";
 import TagManager from "./TagManager";
 import NewChapter from "./NewChapter";
 import {useDispatch, useSelector} from "react-redux";
-import {addChapterAC} from "../../../../redux/chapterReducer";
+import {addChapterAC, submitArtwork} from "../../../../redux/artworkFormReducer";
 
 
 const NewArtwork = (props) => {
 
     //TODO request all tags from server
     const allTags = [
-        {tag: "The Shawshank Redemption"},
-        {tag: "The Godfather"},
-        {tag: "The Godfather: Part II"},
-        {tag: "The Dark Knight"},
+        "The Shawshank Redemption",
+        "The Godfather",
+        "The Godfather: Part II",
+        "The Dark Knight"
     ];
-
+    const dispatch = useDispatch();
     const [tags, setTags] = React.useState([]);
 
     const {register, handleSubmit, errors} = useForm();
-    const onSubmit = (artwork) => {
-        alert("submit")
-    };
-
-    const dispatch = useDispatch();
 
     const addChapter = () => {
         dispatch(addChapterAC())
     };
 
     const allChapters = useSelector(state => {
-        return state.chapterReducer.chapters
+        return state.artworkFormReducer.chapters
     });
 
 
     let chapterEditorComponents = allChapters.map(chapter => <NewChapter key={chapter.index}
                                                                          index={chapter.index}/>);
+
+    const onSubmit = (artwork) => {
+        artwork.tags = tags;
+        artwork.chapters = allChapters;
+        dispatch(submitArtwork(artwork));
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="p-3 m-3">

@@ -27,8 +27,9 @@ function App() {
             <Route path="/register" render={() => <RegisterPage/>}/>
             <Route path="/login" render={() => <LoginPage/>}/>
             <Route path="/admin-panel" render={() => <AdminPanel/>}/>
-            <Route exact path="/" render={() => <Content/>}/>
+            <Route  path="/:page?" render={() => <Content/>}/>
             <Route path="/new-artwork" render={() => <NewArtwork/>}/>
+            {/*<Route path="/artwork" render={() => <NewArtwork/>}/>*/}
         </div>
     );
 }

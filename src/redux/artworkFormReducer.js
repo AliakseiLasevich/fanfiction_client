@@ -1,6 +1,4 @@
-import {cloudinaryApi, usersAPI} from "../api/api";
-import {getUserById} from "./usersReducer";
-import {authorizeUser} from "./authReducer";
+import {cloudinaryApi, artworkAPI} from "../api/api";
 
 const ADD_CHAPTER = "ADD_CHAPTER";
 const REMOVE_CHAPTER = "REMOVE_CHAPTER";
@@ -21,7 +19,7 @@ const initialState = {
     ]
 };
 
-const chapterReducer = (state = initialState, action) => {
+const artworkFormReducer = (state = initialState, action) => {
     switch (action.type) {
 
         case ADD_CHAPTER:
@@ -63,7 +61,7 @@ const chapterReducer = (state = initialState, action) => {
 
         case REMOVE_IMAGE:
             let chapterToRemoveImageUrl = {...state.chapters[action.chapterIndex]};
-            chapterToRemoveImageUrl.imgUrl=null;
+            chapterToRemoveImageUrl.imgUrl = null;
             return {
                 ...state,
                 chapters:
@@ -127,7 +125,6 @@ export const removeChapterAndIndex = (index) => {
     };
 };
 
-
 export const addTitleAC = (chapterIndex, title) => {
     return {
         type: ADD_TITLE, title, chapterIndex
@@ -163,8 +160,16 @@ export const uploadImageToChapter = (files, index) => {
             .then(response => {
                 dispatch(addImageUrlAC(index, response.data.secure_url))
             });
-
     };
 };
 
-export default chapterReducer;
+export const submitArtwork = (artwork) => {
+
+    return (dispatch) => {
+        artworkAPI.postArtwork(artwork)
+            .then(response => console.log(response));
+    };
+
+};
+
+export default artworkFormReducer;

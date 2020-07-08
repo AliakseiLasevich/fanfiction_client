@@ -30,7 +30,7 @@ const ChapterTools = (props) => {
             <div className="d-block align-middle btn" onClick={() => {
                 removeImage()
             }}>
-                <img src={imgUrl}/>
+                <img src={imgUrl} alt={imgUrl}/>
                 <p>Click to remove</p>
             </div>}
 

@@ -1,7 +1,7 @@
 import React from "react";
 import UsersManagement from "./UsersManagement";
 import {FaUserCog} from 'react-icons/fa';
-import {NavLink, Route} from "react-router-dom";
+import {NavLink, Route, withRouter} from "react-router-dom";
 
 const AdminPanel = (props) => {
 
@@ -13,7 +13,7 @@ const AdminPanel = (props) => {
                 </button>
             </NavLink>
 
-            <Route path="/admin-panel/users-management"
+            <Route exact path="/admin-panel/users-management"
                    render={() => <UsersManagement/>}/>
 
 
@@ -21,4 +21,4 @@ const AdminPanel = (props) => {
     )
 };
 
-export default AdminPanel;
+export default withRouter(AdminPanel);

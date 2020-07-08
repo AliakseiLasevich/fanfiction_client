@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Navbar from "./components/Navbar";
 import RegisterPage from "./components/RegisterPage";
 import {Route, withRouter} from "react-router-dom";
@@ -27,9 +27,8 @@ function App() {
             <Route path="/register" render={() => <RegisterPage/>}/>
             <Route path="/login" render={() => <LoginPage/>}/>
             <Route path="/admin-panel" render={() => <AdminPanel/>}/>
-            <Route  path="/:page?" render={() => <Content/>}/>
+            <Route exact path={["/", "/artworks/:page"]} render={() => <Content/>}/>
             <Route path="/new-artwork" render={() => <NewArtwork/>}/>
-            {/*<Route path="/artwork" render={() => <NewArtwork/>}/>*/}
         </div>
     );
 }

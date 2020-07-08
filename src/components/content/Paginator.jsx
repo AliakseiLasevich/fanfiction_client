@@ -19,8 +19,8 @@ const Paginator = (props) => {
     }, [pagesCount]);
 
     const paginator = pagesArray.map(page =>
-        <li className="page-item" onClick={()=>props.setCurrentPage(page)}>
-            <NavLink className="page-link" to={`/${page}`}>{page}</NavLink>
+        <li className="page-item" onClick={()=>props.setCurrentPage(page)} key={page}>
+            <NavLink className="page-link" to={`/artworks/${page}`}> {page}</NavLink>
         </li>);
 
     return (

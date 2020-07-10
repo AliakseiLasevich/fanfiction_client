@@ -25,7 +25,7 @@ const NewChapter = (props) => {
     };
 
     const content = useSelector(state => {
-        return state.artworkFormReducer.content;
+        return state.artworkFormReducer.chapters[props.index].content;
     });
 
 
@@ -46,7 +46,7 @@ const NewChapter = (props) => {
                 selectedTab={selectedTab}
                 onTabChange={setSelectedTab}
                 generateMarkdownPreview={markdown =>
-                    Promise.resolve(converter.makeHtml(markdown))
+                                       Promise.resolve(converter.makeHtml(markdown))
                 }
             />
 

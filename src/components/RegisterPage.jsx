@@ -3,6 +3,7 @@ import {useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
 import {postUser} from "../redux/usersReducer";
 import {Redirect} from "react-router-dom";
+import Loader from "./common/Loader";
 
 const RegisterPage = (props) => {
     const {register, handleSubmit, errors, watch, reset} = useForm();

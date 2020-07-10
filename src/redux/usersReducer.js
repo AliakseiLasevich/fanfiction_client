@@ -70,8 +70,7 @@ export const postUser = (user) => {
     };
 };
 
-export const putUser = (user, jwt) => {
-    debugger
+export const updateUserDetails = (user, jwt) => {
     return (dispatch) => {
         usersAPI.putUser(user, jwt)
             .then(response => {

@@ -4,7 +4,6 @@ import TagCloud from "./TagCloud";
 
 const Sidebar = () => {
 
-
     return(
         <div className="d-flex flex-column row">
            <TopArtworks/>

@@ -85,7 +85,6 @@ const artworkFormReducer = (state = initialState, action) => {
         case ADD_CONTENT:
             let toAddContent = state.chapters[action.chapterIndex];
             let withContent = {...toAddContent, content: action.content};
-
             return {
                 ...state,
                 chapters:

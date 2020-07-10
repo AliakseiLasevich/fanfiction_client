@@ -1,7 +1,7 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 
-const ArtworkCard = (props) => {
+const ArtworkPreview = (props) => {
 
     return(
 
@@ -23,4 +23,4 @@ const ArtworkCard = (props) => {
     )
 };
 
-export default ArtworkCard;
+export default ArtworkPreview;

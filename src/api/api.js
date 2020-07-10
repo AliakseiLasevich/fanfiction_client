@@ -43,8 +43,10 @@ export const artworkAPI = {
     },
     getArtworksPreviews(page = 1, limit = 4) {
         return instance.get(`/artworksPreviews?page=${page}&limit=${limit}`)
+    },
+    getArtworksByUser(userId) {
+        return instance.get(`/users/${userId}/artworks`, {headers: getHeaders(jwt)})
     }
-
 
 };
 

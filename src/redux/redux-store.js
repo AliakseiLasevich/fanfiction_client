@@ -4,6 +4,7 @@ import thunkMiddleware from "redux-thunk";
 import authReducer from "./authReducer";
 import artworkFormReducer from "./artworkFormReducer";
 import artworkReducer from "./artworkReducer";
+import dashboardReducer from "./dashboardReducer";
 
 
 
@@ -11,7 +12,8 @@ let reducers = combineReducers({
     authReducer: authReducer,
     usersReducer: usersReducer,
     artworkReducer: artworkReducer,
-    artworkFormReducer: artworkFormReducer
+    artworkFormReducer: artworkFormReducer,
+    dashboardReducer: dashboardReducer
 });
 
 let store = createStore(reducers, applyMiddleware(thunkMiddleware));

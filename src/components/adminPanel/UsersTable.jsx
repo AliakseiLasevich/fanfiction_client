@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useTable} from 'react-table'
-import {deleteUser, getUsers, putUser} from "../../redux/usersReducer";
+import {deleteUser, getUsers, updateUserDetails} from "../../redux/usersReducer";
+import Table from "../common/Table";
 
 const UsersTable = () => {
     const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const UsersTable = () => {
     };
 
     const updateUser = (user, jwt) => {
-        dispatch(putUser(user, jwt));
+        dispatch(updateUserDetails(user, jwt));
         dispatch(getUsers(jwt));
         setUsers(allUsers);
     };
@@ -99,48 +99,5 @@ const UsersTable = () => {
     )
 };
 
-const Table = ({columns, data}) => {
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-    } = useTable(
-        {
-            columns,
-            data
-        }
-    )
-
-    return (
-
-        <table {...getTableProps()} className="table table-striped">
-            <thead>
-            {headerGroups.map(headerGroup => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map(column => (
-                        <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-                    ))}
-                </tr>
-            ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-            {rows.map(row => {
-                prepareRow(row)
-                return (
-                    <tr {...row.getRowProps()}>
-                        {row.cells.map(cell => {
-                            return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                        })}
-                    </tr>
-                )
-            })}
-            </tbody>
-        </table>
-    )
-
-
-};
 
 export default UsersTable;

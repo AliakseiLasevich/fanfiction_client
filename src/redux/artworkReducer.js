@@ -52,5 +52,15 @@ export const getArtworksPreviews = (page) => {
     }
 };
 
+export const getArtworksPreviewsByUserId = (userId) => {
+    return (dispatch) => {
+        artworkAPI.getArtworksByUser(userId)
+            .then(response => {
+                dispatch(setArtworksPreviews(response.data.artworksPreviews));
+                dispatch(setPagesCount(response.data.pagesCount));
+            });
+    }
+};
+
 
 export default artworkReducer;

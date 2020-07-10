@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import ArtworkCard from "./artwork/ArtworkCard";
+import ArtworkPreview from "./artwork/ArtworkPreview";
 import Sidebar from "../sidebar/Sidebar";
 import {NavLink, withRouter} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -22,12 +22,12 @@ const Content = (props) => {
         dispatch(getArtworksPreviews(props.match.params.page));
     }, [currentPage]);
 
-    const artworkComponents = artworksPreviews.map(artwork => <ArtworkCard key={artwork.artworkId}
-                                                                           artworkId={artwork.artworkId}
-                                                                           authorId={artwork.authorId}
-                                                                           authorName={artwork.authorName}
-                                                                           name={artwork.name}
-                                                                           summary={artwork.summary}
+    const artworkComponents = artworksPreviews.map(artwork => <ArtworkPreview key={artwork.artworkId}
+                                                                              artworkId={artwork.artworkId}
+                                                                              authorId={artwork.authorId}
+                                                                              authorName={artwork.authorName}
+                                                                              name={artwork.name}
+                                                                              summary={artwork.summary}
 
 
     />);
@@ -40,12 +40,12 @@ const Content = (props) => {
             </NavLink>
             }
 
-            <div className="d-flex justify-content-around row">
-                <div className="align-self-center p-4 col-10">
+            <div className="row">
+                <div className="align-self-center p-4 col-9">
                     {artworkComponents}
                     <Paginator setCurrentPage={setCurrentPage} />
                 </div>
-                <div className="align-self-center p-4 col-2"><Sidebar/></div>
+                <div className="align-self-center p-4 col-3"><Sidebar/></div>
             </div>
         </div>
     )

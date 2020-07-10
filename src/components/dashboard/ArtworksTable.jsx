@@ -1,7 +1,6 @@
-import React, {forwardRef, useEffect, useState} from "react";
+import React, {forwardRef, useEffect} from "react";
 
 import MaterialTable from "material-table";
-import Save from "@material-ui/icons/Save";
 import Delete from "@material-ui/icons/Delete";
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -20,6 +19,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import {getArtworksPreviewsByUserId} from "../../redux/artworkReducer";
 import {useDispatch, useSelector} from "react-redux";
+import {NavLink} from "react-router-dom";
 
 
 const ArtworksTable = (props) => {
@@ -62,7 +62,11 @@ const ArtworksTable = (props) => {
             icons={tableIcons}
             title="User artworks"
             columns={[
-                {title: 'Name', field: 'name'},
+                {
+                    title: 'Name',
+                    field: 'name',
+                    render: rowData => <NavLink to={`/artworks/id/${rowData.artworkId}`}>{rowData.name}</NavLink>
+                },
             ]}
             data={artworksPreviews}
             actions={[

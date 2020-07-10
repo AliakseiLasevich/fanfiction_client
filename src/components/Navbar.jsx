@@ -33,7 +33,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="navbar navbar-expand-sm navbar-light bg-light row">
+        <nav className="navbar navbar-expand-sm navbar-light bg-warning row">
             <NavLink className="navbar-brand col" to="/">Fanfic</NavLink>
 
             <div className="collapse navbar-collapse" id="navbarNav">

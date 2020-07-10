@@ -1,31 +1,63 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useRouteMatch} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {getArtworkById} from "../../../redux/artworkReducer";
+import ReactMarkdown from "react-markdown";
+import {CommentsByWebSocket} from "../comments/CommentsByWebSocket";
+import CommentForm from "../comments/CommentForm";
 
 const Artwork = (props) => {
-    const {url, path} = useRouteMatch();
+    const {path} = useRouteMatch();
+
 
     useEffect(() => {
-        console.log(`url`, url)
-        console.log(`path`, path)
-        console.log(props)
+        dispatch(getArtworkById(match.params.artworkId))
     }, []);
+
+    let match = useRouteMatch({
+        path: path,
+        strict: true,
+        sensitive: true
+    });
+
+    const dispatch = useDispatch();
+
+    const currentArtwork = useSelector(state => {
+        return state.artworkReducer.currentArtwork
+    });
+
+    let chapters = [];
+
+    if (currentArtwork.chapters) {
+        chapters = currentArtwork.chapters.map(chapter =>
+
+            <div className="border p-2 m-2" key={chapter.id}>
+                <div className="d-flex justify-content-center">
+                    <h2>{`${chapter.chapterNumber + 1}. ${chapter.title}`}</h2></div>
+                {chapter.imageUrl &&
+                <div className="row justify-content-center">
+                    <img src={chapter.imageUrl} alt="Chapter image"/>
+                </div>}
+
+                <div><ReactMarkdown source={chapter.content}/></div>
+            </div>
+
+        );
+    }
 
     return (
         <div>
-!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$
-!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$
-!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$
-!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$
-!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$
-!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$
-!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$
-!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$
-!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$
-!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$
-!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$
-!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$
-!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$
-!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$!OI@#K!!!!!!!!!!!!$#$
+            <div className="row m-2">
+                <div className="col card-header text-center"><h2>{currentArtwork.name}</h2></div>
+            </div>
+
+            <div className="row border">
+                <div className="col">{chapters}</div>
+            </div>
+
+
+            <CommentsByWebSocket/>
+
         </div>
     )
 };

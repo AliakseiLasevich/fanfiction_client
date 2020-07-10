@@ -37,7 +37,7 @@ function App() {
                 <Route path="/admin-panel" render={() => <AdminPanel/>}/>
                 <Route exact path={["/", "/artworks/:page"]} render={() => <Content/>}/>
                 <Route path="/new-artwork" render={() => <NewArtwork/>}/>
-                <Route path="/artworks/:artworkId" render={() => <Artwork/>}/>
+                <Route path="/artworks/id/:artworkId" render={() => <Artwork/>}/>
                 <Route component={PageNotFound}/>
             </Switch>
         </div>

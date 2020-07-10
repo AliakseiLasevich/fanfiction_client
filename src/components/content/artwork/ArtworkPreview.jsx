@@ -14,7 +14,7 @@ const ArtworkPreview = (props) => {
                 <p className="card-text">{props.summary}</p>
                 <div className="justify-content-end">
 
-                    <NavLink className="btn btn-light d-block" to={`/artworks/${props.artworkId}`}>Read More</NavLink>
+                    <NavLink className="btn btn-light d-block" to={`/artworks/id/${props.artworkId}`}>Read More</NavLink>
                 </div>
             </div>
         </div>

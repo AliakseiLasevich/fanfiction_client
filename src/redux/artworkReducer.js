@@ -2,6 +2,7 @@ import {artworkAPI} from "../api/api";
 
 const SET_ARTWORKS_PREVIEWS = "SET_ARTWORKS_PREVIEWS";
 const SET_PAGES_COUNT = "SET_PAGES_COUNT";
+const SET_CURRENT_ARTWORK = "SET_CURRENT_ARTWORK";
 
 let initialState = {
     artworksPreviews: [],
@@ -23,6 +24,11 @@ const artworkReducer = (state = initialState, action) => {
                 ...state, pagesCount: action.pagesCount
             };
 
+        case SET_CURRENT_ARTWORK:
+            return {
+                ...state, currentArtwork: action.currentArtwork
+            };
+
         default:
             return state;
     }
@@ -41,6 +47,22 @@ export const setPagesCount = (pagesCount) => {
         pagesCount
     }
 };
+
+export const setCurrentArtwork = (currentArtwork) => {
+    return {
+        type: SET_CURRENT_ARTWORK,
+        currentArtwork
+    }
+};
+
+export const getArtworkById = (artworkId) => {
+    return (dispatch) => {
+        artworkAPI.getArtworkById(artworkId)
+            .then(response => {
+                dispatch(setCurrentArtwork(response.data))
+            })
+    }
+}
 
 export const getArtworksPreviews = (page) => {
     return (dispatch) => {

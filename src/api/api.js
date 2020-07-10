@@ -46,6 +46,9 @@ export const artworkAPI = {
     },
     getArtworksByUser(userId) {
         return instance.get(`/users/${userId}/artworks`, {headers: getHeaders(jwt)})
+    },
+    getArtworkById(artworkId) {
+        return instance.get(`/artworks/${artworkId}`)
     }
 
 };

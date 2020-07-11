@@ -2,7 +2,7 @@ import React from "react";
 import {useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect} from "react-router-dom";
-import {login, setLogged} from "../redux/authReducer";
+import {login} from "../redux/authReducer";
 
 const LoginPage = (props) => {
 

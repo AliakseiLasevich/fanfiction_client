@@ -1,24 +1,24 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {useRouteMatch} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getArtworkById} from "../../../redux/artworkReducer";
 import ReactMarkdown from "react-markdown";
 import {CommentsByWebSocket} from "../comments/CommentsByWebSocket";
-import CommentForm from "../comments/CommentForm";
 
 const Artwork = (props) => {
     const {path} = useRouteMatch();
-
-
-    useEffect(() => {
-        dispatch(getArtworkById(match.params.artworkId))
-    }, []);
-
     let match = useRouteMatch({
         path: path,
         strict: true,
         sensitive: true
     });
+
+    const openedArtwork = match.params.artworkId;
+
+    useEffect(() => {
+        dispatch(getArtworkById(openedArtwork))
+    }, []);
+
 
     const dispatch = useDispatch();
 
@@ -56,7 +56,7 @@ const Artwork = (props) => {
             </div>
 
 
-            <CommentsByWebSocket/>
+            <CommentsByWebSocket openedArtwork={openedArtwork}/>
 
         </div>
     )

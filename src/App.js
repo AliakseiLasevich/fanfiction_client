@@ -10,7 +10,6 @@ import {authorizeUser} from "./redux/authReducer";
 import NewArtwork from "./components/content/artwork/form/NewArtwork";
 import Dashboard from "./components/dashboard/Dashboard";
 import PageNotFound from "./components/common/PageNotFound";
-import Loader from "./components/common/Loader";
 import Artwork from "./components/content/artwork/Artwork";
 
 

@@ -7,7 +7,7 @@ const ArtworkPreview = (props) => {
 
         <div className="card row my-3">
             <div className="card-header">
-                {props.artworkId}
+                {props.authorName}
             </div>
             <div className="card-body">
                 <h4 className="card-title">{props.name}</h4>

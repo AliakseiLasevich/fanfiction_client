@@ -3,7 +3,6 @@ import {useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
 import {postUser} from "../redux/usersReducer";
 import {Redirect} from "react-router-dom";
-import Loader from "./common/Loader";
 
 const RegisterPage = (props) => {
     const {register, handleSubmit, errors, watch, reset} = useForm();
@@ -13,7 +12,7 @@ const RegisterPage = (props) => {
         return state.usersReducer.logged
     });
 
-    const onSubmit = ({firstName, lastName, email, password, replyPassword}) => {
+    const onSubmit = ({firstName, lastName, email, password, nickName}) => {
         const newUser = {firstName, lastName, email, password};
         dispatch(postUser(newUser))
         setSubmitted(true);
@@ -24,6 +23,15 @@ const RegisterPage = (props) => {
         <div className="container p-2 m-3 mx-auto bg-white  border w-50">
             <form onSubmit={handleSubmit(onSubmit)}>
                 <h2>Register new user</h2>
+
+                <div className="form-group">
+                    <label htmlFor="nickName">Nick name</label>
+                    <input className="form-control" type="text" name="nickName"
+                           ref={register({required: "Input nick name please"})}/>
+                    <div className="text-danger">  {errors.nickName &&
+                    <span>{errors.nickName.message}</span>}</div>
+                </div>
+
                 <div className="form-group">
                     <label htmlFor="firstName">First name</label>
                     <input className="form-control" type="text" name="firstName"

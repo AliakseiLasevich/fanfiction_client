@@ -5,8 +5,6 @@ import TagManager from "./TagManager";
 import NewChapter from "./NewChapter";
 import {useDispatch, useSelector} from "react-redux";
 import {addChapterAC, submitArtwork} from "../../../../redux/artworkFormReducer";
-import {useEffect} from "react";
-
 
 const NewArtwork = (props) => {
 

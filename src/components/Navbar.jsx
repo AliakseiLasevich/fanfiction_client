@@ -62,7 +62,7 @@ const Navbar = () => {
                     {logged && <li className="nav-item dropdown">
                         <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown">
                             <span className="p-1"><FaUserCircle/></span>
-                            {currentUser.email}
+                            {currentUser.nickName}
                         </a>
                         <div className="dropdown-menu">
 

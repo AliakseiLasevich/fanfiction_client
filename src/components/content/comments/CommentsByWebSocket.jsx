@@ -13,45 +13,56 @@ export class CommentsByWebSocket extends React.Component {
     getInitialState = () => {
         return {
             comments: [],
-            topics: ['/topic/findComments',
-                '/user/queue/gameOver',
+            topics: [
+                `/topic/comments/${this.props.openedArtwork}`,
+                `/topic/comments/${this.props.openedArtwork}/newComment`
             ]
         }
     };
 
     onConnect = () => {
-        console.log("on connect")
-        this.requestComments("xBou5AxUbA0M1ag127uueYSFBVpo8G")
-        console.log(this.state)
+        this.requestComments(this.props.openedArtwork)
     };
 
     requestComments = (artworkId) => {
-        this.clientRef.sendMessage('/app/comments', JSON.stringify("xBou5AxUbA0M1ag127uueYSFBVpo8G"));
+        this.clientRef.sendMessage(`/app/comments/${artworkId}`);
     };
 
     setComments = (comments) => {
-        this.setState(state => ({...state, comments: comments}))
+        this.setState(state => ({
+            ...state,
+            comments: [...this.state.comments, ...comments]
+        }));
+    };
+
+    addComment = comment => {
+        this.setState(state => ({
+            ...state,
+            comments: [...this.state.comments, comment]
+        }));
     };
 
     postComment = (comment) => {
-        this.clientRef.sendMessage('/app/postComment', JSON.stringify(comment));
+        this.clientRef.sendMessage(`/app/postComment/${this.props.openedArtwork}`, JSON.stringify(comment));
     };
 
     onMessageReceive = (message, topic) => {
-        console.log("on onMessageReceive");
-        if (topic === '/topic/comments') {
-            this.refreshGamesList(message);
+        debugger
+        if (topic === `/topic/comments/${this.props.openedArtwork}`) {
+            this.setComments(message);
+            return;
+        }
+        if (`/topic/comments/${this.props.openedArtwork}/newComment`) {
+            this.addComment(message);
             return;
         }
     };
-
 
     render() {
         return (
             <div>
                 <CommentForm postComment={this.postComment.bind(this)}/>
                 <Comments comments={this.state.comments}/>
-
 
                 <SockJsClient
                     url={"http://localhost:8080/handler"}
@@ -61,7 +72,6 @@ export class CommentsByWebSocket extends React.Component {
                     ref={(client) => {
                         this.clientRef = client
                     }}/>
-
 
 
             </div>

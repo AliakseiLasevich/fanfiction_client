@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {NavLink, useRouteMatch} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 const Paginator = (props) => {
 
     const [pagesArray, setPagesArray] = useState([]);
-    const {url, path} = useRouteMatch();
-
     const pagesCount = useSelector(state => {
         return state.artworkReducer.pagesCount;
     });
@@ -20,7 +18,7 @@ const Paginator = (props) => {
     }, [pagesCount]);
 
     const paginator = pagesArray.map(page =>
-        <li className="page-item" onClick={()=>props.setCurrentPage(page)} key={page}>
+        <li className="page-item" onClick={() => props.setCurrentPage(page)} key={page}>
             <NavLink className="page-link" to={`/artworks/${page}`}> {page}</NavLink>
         </li>);
 

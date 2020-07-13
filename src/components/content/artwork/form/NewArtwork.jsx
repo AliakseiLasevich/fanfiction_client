@@ -1,20 +1,17 @@
 import * as React from "react";
+import {useEffect} from "react";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import {useForm} from "react-hook-form";
 import TagManager from "./TagManager";
 import NewChapter from "./NewChapter";
 import {useDispatch, useSelector} from "react-redux";
-import {addChapterAC, submitArtwork} from "../../../../redux/artworkFormReducer";
+import {addChapterAC, requestTags, submitArtwork} from "../../../../redux/artworkFormReducer";
 
 const NewArtwork = (props) => {
 
-    //TODO request all tags from server
-    const allTags = [
-        "The Shawshank Redemption",
-        "The Godfather",
-        "The Godfather: Part II",
-        "The Dark Knight"
-    ];
+    const loadedTags = useSelector(state => {
+        return state.artworkFormReducer.tags
+    });
 
     const dispatch = useDispatch();
     const [tags, setTags] = React.useState([]);
@@ -29,15 +26,22 @@ const NewArtwork = (props) => {
         return state.artworkFormReducer.chapters
     });
 
-
     let chapterEditorComponents = allChapters.map(chapter => <NewChapter key={chapter.index}
                                                                          index={chapter.index}/>);
 
     const onSubmit = (artwork) => {
-        artwork.tags = tags;
+        artwork.tags = convertTagsToList(tags);
         artwork.chapters = allChapters;
         dispatch(submitArtwork(artwork));
     };
+
+    const convertTagsToList =(tags) => {
+      return tags.map(tag=>tag.name);
+    };
+
+    useEffect(() => {
+        dispatch(requestTags());
+    }, []);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="p-3 m-3">
@@ -68,12 +72,14 @@ const NewArtwork = (props) => {
                 <div className="text-danger">  {errors.genre && <span>{errors.genre.message}</span>}</div>
             </div>
 
-
             <label htmlFor="tags">Tags</label>
             <div className="mb-4">
-                <TagManager tags={tags}
-                            setTags={setTags}
-                            allTags={allTags}/>
+
+                <TagManager
+                    loadedTags={loadedTags}
+                    tags={tags}
+                    setTags={setTags}
+                />
             </div>
 
             {chapterEditorComponents}

@@ -3,7 +3,7 @@ import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {FaDoorOpen, FaKey, FaUserCircle} from "react-icons/fa";
 import {logoutAC, removeLocalStorageProps, setLogged} from "../../redux/authReducer";
-import Search from "../content/Search";
+import Search from "../content/search/Search";
 
 const Navbar = () => {
     const dispatch = useDispatch();

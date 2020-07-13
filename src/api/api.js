@@ -58,6 +58,9 @@ export const artworkAPI = {
     },
     getArtworksPreviewsBySearch(textToSearch) {
         return instance.get(`/search?search=${textToSearch}`)
+    },
+    getTags(){
+        return instance.get(`/tags`, {headers: getHeaders(jwt)})
     }
 
 };

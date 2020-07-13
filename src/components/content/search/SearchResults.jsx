@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
 import {useRouteMatch} from "react-router-dom";
-import {getArtworksPreviewsBySearch} from "../../redux/artworkReducer";
+import {getArtworksPreviewsBySearch} from "../../../redux/artworkReducer";
 import {useDispatch, useSelector} from "react-redux";
-import ArtworkPreview from "./artwork/ArtworkPreview";
+import ArtworkPreview from "../artwork/ArtworkPreview";
 
 const SearchResults = (props) => {
     const dispatch = useDispatch();

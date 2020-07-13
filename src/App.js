@@ -11,7 +11,7 @@ import NewArtwork from "./components/content/artwork/form/NewArtwork";
 import Dashboard from "./components/dashboard/Dashboard";
 import PageNotFound from "./components/common/PageNotFound";
 import Artwork from "./components/content/artwork/Artwork";
-import SearchResults from "./components/content/SearchResults";
+import SearchResults from "./components/content/search/SearchResults";
 import EmailVerificationResult from "./components/auth/EmailVerificationResult";
 
 

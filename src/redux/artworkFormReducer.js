@@ -1,5 +1,7 @@
 import {cloudinaryApi, artworkAPI} from "../api/api";
 
+const SET_TAGS = "SET_TAGS";
+
 const ADD_CHAPTER = "ADD_CHAPTER";
 const REMOVE_CHAPTER = "REMOVE_CHAPTER";
 const ADD_IMAGE_URL = "ADD_IMAGE_URL";
@@ -14,7 +16,8 @@ const initialState = {
             index: 0,
             title: null,
             content: null,
-            imgUrl: null
+            imgUrl: null,
+            tags: []
         }
     ]
 };
@@ -93,6 +96,12 @@ const artworkFormReducer = (state = initialState, action) => {
                         ...state.chapters.slice(action.chapterIndex + 1)]
             };
 
+        case SET_TAGS:
+            return {
+                ...state, tags: action.tags
+            };
+
+
         default:
             return state;
     }
@@ -103,6 +112,12 @@ const artworkFormReducer = (state = initialState, action) => {
 export const addChapterAC = (chapter) => {
     return {
         type: ADD_CHAPTER, chapter
+    }
+};
+
+export const setTags = (tags) => {
+    return {
+        type: SET_TAGS, tags
     }
 };
 
@@ -163,10 +178,19 @@ export const uploadImageToChapter = (files, index) => {
 };
 
 export const submitArtwork = (artwork) => {
-
     return (dispatch) => {
         artworkAPI.postArtwork(artwork)
             .then(response => console.log(response));
+    };
+
+};
+
+export const requestTags = () => {
+    return (dispatch) => {
+        artworkAPI.getTags()
+            .then(response => {
+                dispatch(setTags(response.data))
+            });
     };
 
 };

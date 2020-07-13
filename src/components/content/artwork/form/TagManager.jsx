@@ -12,7 +12,7 @@ const TagManager = (props) => {
                 event.preventDefault();
                 event.stopPropagation();
                 if (event.target.value.length > 0) {
-                    props.setTags([...props.tags, event.target.value]);
+                    props.setTags([...props.tags, {name: event.target.value}]);
                 }
                 break;
             }
@@ -26,8 +26,8 @@ const TagManager = (props) => {
                 multiple
                 freeSolo
                 id="tags-outlined"
-                options={props.allTags}
-                getOptionLabel={option => option.tag || option}
+                options={props.loadedTags}
+                getOptionLabel={option => option.name || option}
                 value={props.tags}
                 onChange={(event, newValue) => props.setTags(newValue)}
                 filterSelectedOptions

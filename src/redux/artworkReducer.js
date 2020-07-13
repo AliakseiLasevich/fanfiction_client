@@ -84,5 +84,14 @@ export const getArtworksPreviewsByUserId = (userId) => {
     }
 };
 
+export const getArtworksPreviewsBySearch = (textToSearch) => {
+    return (dispatch) => {
+        artworkAPI.getArtworksPreviewsBySearch(textToSearch)
+            .then(response => {
+                dispatch(setArtworksPreviews(response.data));
+            })
+    }
+};
+
 
 export default artworkReducer;

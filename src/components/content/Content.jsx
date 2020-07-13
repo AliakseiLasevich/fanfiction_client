@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import ArtworkPreview from "./artwork/ArtworkPreview";
 import Sidebar from "../sidebar/Sidebar";
-import {NavLink, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getArtworksPreviews} from "../../redux/artworkReducer";
 import Paginator from "./Paginator";
@@ -34,16 +34,10 @@ const Content = (props) => {
 
     return (
         <div>
-            {logged &&
-            <NavLink to="/new-artwork" className="m-1 p-1">
-                <button className="btn btn-sm btn-secondary btn-block">New artwork</button>
-            </NavLink>
-            }
-
             <div className="row">
                 <div className="align-self-center p-4 col-9">
                     {artworkComponents}
-                    <Paginator setCurrentPage={setCurrentPage} />
+                    <Paginator setCurrentPage={setCurrentPage}/>
                 </div>
                 <div className="align-self-center p-4 col-3"><Sidebar/></div>
             </div>

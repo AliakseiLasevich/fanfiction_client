@@ -5,7 +5,7 @@ import {useSelector} from "react-redux";
 const CommentForm = (props) => {
 
 
-    const {register, handleSubmit, errors} = useForm();
+    const {register, handleSubmit, errors, reset} = useForm();
     const logged = useSelector(state => {
         return state.authReducer.logged
     });
@@ -16,8 +16,8 @@ const CommentForm = (props) => {
     const onSubmit = ({comment}) => {
         let newComment = {userId, comment}
         props.postComment(newComment)
+        reset()
     };
-
 
     return (
         <>

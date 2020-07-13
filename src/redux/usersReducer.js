@@ -1,11 +1,14 @@
-import {usersAPI} from "../api/api";
+import {emailVerificationApi, usersAPI} from "../api/api";
+import {setCurrentUser, setJwt, setLogged} from "./authReducer";
 
 const SET_ALL_USERS = "SET_ALL_USERS";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
+const SET_EMAIL_VERIFY_RESULT = "SET_EMAIL_VERIFY_RESULT";
 
 let initialState = {
     isFetching: false,
-    allUsers: []
+    allUsers: [],
+    emailVerifyResult: {}
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -21,6 +24,12 @@ const usersReducer = (state = initialState, action) => {
             return {
                 ...state,
                 allUsers: action.allUsers
+            };
+
+        case SET_EMAIL_VERIFY_RESULT:
+            return {
+                ...state,
+                emailVerifyResult: action.emailVerifyResult
             };
 
         default:
@@ -40,6 +49,13 @@ export const setAllUsers = (allUsers) => {
     return {
         type: SET_ALL_USERS,
         allUsers
+    }
+};
+
+export const setEmailVerifyResult = (emailVerifyResult) => {
+    return {
+        type: SET_EMAIL_VERIFY_RESULT,
+        emailVerifyResult
     }
 };
 
@@ -88,5 +104,16 @@ export const deleteUser = (userId, jwt) => {
             })
     }
 };
+
+export const verifyEmailToken = (token) => {
+    return (dispatch) => {
+        emailVerificationApi.verify(token)
+            .then(response => {
+                dispatch(setEmailVerifyResult(response.data))
+                }
+            )
+    }
+};
+
 
 export default usersReducer;

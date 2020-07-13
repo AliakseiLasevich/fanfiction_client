@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
-import {postUser} from "../redux/usersReducer";
+import {postUser} from "../../redux/usersReducer";
 import {Redirect} from "react-router-dom";
 
 const RegisterPage = (props) => {
@@ -13,7 +13,7 @@ const RegisterPage = (props) => {
     });
 
     const onSubmit = ({firstName, lastName, email, password, nickName}) => {
-        const newUser = {firstName, lastName, email, password};
+        const newUser = {firstName, lastName, email, password, nickName};
         dispatch(postUser(newUser))
         setSubmitted(true);
         reset();

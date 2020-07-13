@@ -15,6 +15,12 @@ const getHeaders = (jwt) => {
 let userId = localStorage.getItem("userId");
 let jwt = localStorage.getItem("jwt");
 
+export const emailVerificationApi = {
+    verify(token) {
+        return instance.get(`/users/email-verification?token=${token}`)
+    }
+};
+
 export const usersAPI = {
     login(user) {
         return instance.post("/users/login", user);
@@ -49,6 +55,9 @@ export const artworkAPI = {
     },
     getArtworkById(artworkId) {
         return instance.get(`/artworks/${artworkId}`)
+    },
+    getArtworksPreviewsBySearch(textToSearch) {
+        return instance.get(`/search?search=${textToSearch}`)
     }
 
 };

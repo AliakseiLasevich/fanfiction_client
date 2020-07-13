@@ -2,7 +2,8 @@ import React, {useEffect, useState} from "react";
 import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {FaDoorOpen, FaKey, FaUserCircle} from "react-icons/fa";
-import {logoutAC, removeLocalStorageProps, setLogged} from "../redux/authReducer";
+import {logoutAC, removeLocalStorageProps, setLogged} from "../../redux/authReducer";
+import Search from "../content/Search";
 
 const Navbar = () => {
     const dispatch = useDispatch();
@@ -39,10 +40,7 @@ const Navbar = () => {
             <div className="collapse navbar-collapse" id="navbarNav">
 
                 <div className="col">
-                    <form >
-                        <input type="text" placeholder="Search"/>
-
-                    </form>
+                    <Search/>
                 </div>
 
                 <ul className="navbar-nav ml-auto ">
@@ -65,6 +63,13 @@ const Navbar = () => {
                             {currentUser.nickName}
                         </a>
                         <div className="dropdown-menu">
+
+                            <button onClick={() => {
+                            }} className="dropdown-item">
+                                <NavLink className="btn btn-sm" to="/new-artwork">
+                                    New Artwork
+                                </NavLink>
+                            </button>
 
                             <button onClick={() => {
                             }} className="dropdown-item">

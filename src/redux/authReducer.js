@@ -88,14 +88,12 @@ export const logoutAC = () => {
 };
 
 export const login = (user) => {
-
     return (dispatch) => {
         usersAPI.login(user)
             .then(response => {
 
                     dispatch(getUserById(response.headers.userid, response.headers.authorization))
                         .then((user) => {
-
                                 dispatch(authorizeUser(user.userId, response.headers.authorization))
                                 localStorage.setItem("userId", response.headers.userid);
                                 localStorage.setItem("jwt", response.headers.authorization);
@@ -114,5 +112,6 @@ export const authorizeUser = (userId, jwt) => (dispatch) => {
         dispatch(setLogged(true));
     })
 };
+
 
 export default authReducer;

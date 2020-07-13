@@ -38,7 +38,6 @@ const Artwork = (props) => {
                 <div className="row justify-content-center">
                     <img src={chapter.imageUrl} alt="Chapter image"/>
                 </div>}
-
                 <div><ReactMarkdown source={chapter.content}/></div>
             </div>
 

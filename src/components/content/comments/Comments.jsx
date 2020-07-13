@@ -1,7 +1,7 @@
 import React from "react";
 
 const Comments = (props) => {
-    console.log(props)
+
     const commentComponents = props.comments.map(comment =>
         <div key={comment.id} className="row mx-5 my-1 p-1 border">
             <div className="col-2">{comment.userNickName}</div>

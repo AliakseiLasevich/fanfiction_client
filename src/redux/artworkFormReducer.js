@@ -3,11 +3,13 @@ import {cloudinaryApi, artworkAPI} from "../api/api";
 const SET_TAGS = "SET_TAGS";
 
 const ADD_CHAPTER = "ADD_CHAPTER";
+const SET_CHAPTERS = "SET_CHAPTERS";
 const REMOVE_CHAPTER = "REMOVE_CHAPTER";
 const ADD_IMAGE_URL = "ADD_IMAGE_URL";
 const REMOVE_IMAGE = "REMOVE_IMAGE";
 const ADD_TITLE = "ADD_TITLE";
 const ADD_CONTENT = "ADD_CONTENT";
+const SET_GENRES = "SET_GENRES";
 const RECALCULATE_CHAPTERS_INDEXES = "RECALCULATE_CHAPTERS_INDEXES";
 
 const initialState = {
@@ -17,7 +19,8 @@ const initialState = {
             title: null,
             content: null,
             imgUrl: null,
-            tags: []
+            tags: [],
+            genres: []
         }
     ]
 };
@@ -34,6 +37,11 @@ const artworkFormReducer = (state = initialState, action) => {
             };
             return {
                 ...state, chapters: [...state.chapters, newChapter]
+            };
+
+        case SET_CHAPTERS:
+            return {
+                ...state, chapters: action.chapters
             };
 
         case REMOVE_CHAPTER:
@@ -101,6 +109,11 @@ const artworkFormReducer = (state = initialState, action) => {
                 ...state, tags: action.tags
             };
 
+            case SET_GENRES:
+            return {
+                ...state, genres: action.genres
+            };
+
 
         default:
             return state;
@@ -121,9 +134,21 @@ export const setTags = (tags) => {
     }
 };
 
+export const setGenres = (genres) => {
+    return {
+        type: SET_GENRES, genres
+    }
+};
+
 export const removeChapterAC = (index) => {
     return {
         type: REMOVE_CHAPTER, index
+    }
+};
+
+export const setChaptersAC = (chapters) => {
+    return {
+        type: SET_CHAPTERS, chapters
     }
 };
 
@@ -146,7 +171,6 @@ export const addTitleAC = (chapterIndex, title) => {
 };
 
 export const addContentAC = (chapterIndex, content) => {
-
     return {
         type: ADD_CONTENT, content, chapterIndex
     }
@@ -192,7 +216,15 @@ export const requestTags = () => {
                 dispatch(setTags(response.data))
             });
     };
+};
 
+export const requestGenres = () => {
+    return (dispatch) => {
+        artworkAPI.getGenres()
+            .then(response => {
+                dispatch(setGenres(response.data))
+            });
+    };
 };
 
 export default artworkFormReducer;

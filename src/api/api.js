@@ -61,6 +61,9 @@ export const artworkAPI = {
     },
     getTags(){
         return instance.get(`/tags`, {headers: getHeaders(jwt)})
+    },
+    getGenres(){
+        return instance.get(`/genres`, {headers: getHeaders(jwt)})
     }
 
 };

@@ -47,7 +47,6 @@ export class CommentsByWebSocket extends React.Component {
     };
 
     onMessageReceive = (message, topic) => {
-        debugger
         if (topic === `/topic/comments/${this.props.openedArtwork}`) {
             this.setComments(message);
             return;

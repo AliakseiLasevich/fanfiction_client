@@ -7,7 +7,10 @@ const SET_CURRENT_ARTWORK = "SET_CURRENT_ARTWORK";
 let initialState = {
     artworksPreviews: [],
     pagesCount: 0,
-    currentArtwork: {}
+    currentArtwork: {
+        genre: "",
+        chapters: ""
+    }
 };
 
 const artworkReducer = (state = initialState, action) => {

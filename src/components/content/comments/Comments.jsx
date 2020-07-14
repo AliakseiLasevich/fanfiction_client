@@ -10,7 +10,7 @@ const Comments = (props) => {
         </div>)
     return (
         <div className="m-1 p-3 text-center">
-            <h2>Comments: </h2>
+            {commentComponents.length > 0 ? <h2>Comments: </h2> : ""}
             {commentComponents}
         </div>
     )

@@ -7,7 +7,7 @@ import {useDispatch} from "react-redux";
 import AdminPanel from "./components/adminPanel/AdminPanel";
 import Content from "./components/content/Content";
 import {authorizeUser} from "./redux/authReducer";
-import NewArtwork from "./components/content/artwork/form/NewArtwork";
+import ArtworkForm from "./components/content/artwork/form/ArtworkForm";
 import Dashboard from "./components/dashboard/Dashboard";
 import PageNotFound from "./components/common/PageNotFound";
 import Artwork from "./components/content/artwork/Artwork";
@@ -38,7 +38,7 @@ function App() {
                 <Route path="/dashboard" render={() => <Dashboard/>}/>
                 <Route path="/admin-panel" render={() => <AdminPanel/>}/>
                 <Route exact path={["/", "/artworks/:page"]} render={() => <Content/>}/>
-                <Route path="/new-artwork" render={() => <NewArtwork/>}/>
+                <Route path="/artwork-form/:artworkId?" render={() => <ArtworkForm/>}/>
                 <Route path="/artworks/id/:artworkId" render={() => <Artwork/>}/>
                 <Route exact path="/search/:textToSearch" render={() => <SearchResults/>}/>
                 <Route component={PageNotFound}/>

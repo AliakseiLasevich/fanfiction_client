@@ -37,7 +37,7 @@ const TagManager = (props) => {
                         <TextField
                             {...params}
                             variant="outlined"
-                            label="Input tags here"
+                            label="Input tags here. Separate with space button or , sign"
                             margin="normal"
                             fullWidth
                         />

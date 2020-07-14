@@ -66,7 +66,7 @@ const Navbar = () => {
 
                             <button onClick={() => {
                             }} className="dropdown-item">
-                                <NavLink className="btn btn-sm" to="/new-artwork">
+                                <NavLink className="btn btn-sm" to="/artwork-form">
                                     New Artwork
                                 </NavLink>
                             </button>

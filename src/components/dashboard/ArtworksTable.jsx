@@ -1,4 +1,4 @@
-import React, {forwardRef, useEffect} from "react";
+import React, {forwardRef, useEffect, useState} from "react";
 
 import MaterialTable from "material-table";
 import Delete from "@material-ui/icons/Delete";
@@ -19,7 +19,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import {getArtworksPreviewsByUserId} from "../../redux/artworkReducer";
 import {useDispatch, useSelector} from "react-redux";
-import {NavLink} from "react-router-dom";
+import {NavLink, Redirect, Route} from "react-router-dom";
 
 
 const ArtworksTable = (props) => {
@@ -35,6 +35,8 @@ const ArtworksTable = (props) => {
     useEffect(() => {
         dispatch(getArtworksPreviewsByUserId(currentUser.userId));
     }, [currentUser]);
+
+    const [artworkToEdit, setArtworkToEdit] = useState(null);
 
 
     const tableIcons = {
@@ -58,33 +60,38 @@ const ArtworksTable = (props) => {
     };
 
     return (
-        <MaterialTable
-            icons={tableIcons}
-            title="User artworks"
-            columns={[
-                {
-                    title: 'Name',
-                    field: 'name',
-                    render: rowData => <NavLink to={`/artworks/id/${rowData.artworkId}`}>{rowData.name}</NavLink>
-                },
-            ]}
-            data={artworksPreviews}
-            actions={[
-                {
-                    icon: Edit,
-                    tooltip: 'Edit',
-                    onClick: (event, rowData) => console.log(rowData)
-                },
-                {
-                    icon: Delete,
-                    tooltip: 'Delete',
-                    onClick: (event, rowData) => alert("You want to delete " + rowData.name)
-                }
-            ]}
-            options={{
-                actionsColumnIndex: -1
-            }}
-        />
+        <>
+            <MaterialTable
+                icons={tableIcons}
+                title="User artworks"
+                columns={[
+                    {
+                        title: 'Name',
+                        field: 'name',
+                        render: rowData => <NavLink to={`/artworks/id/${rowData.artworkId}`}>{rowData.name}</NavLink>
+                    },
+                ]}
+                data={artworksPreviews}
+                actions={[
+                    {
+                        icon: Edit,
+                        tooltip: 'Edit',
+                        onClick: (event, rowData) => setArtworkToEdit(rowData.artworkId)
+                    },
+                    {
+                        icon: Delete,
+                        tooltip: 'Delete',
+                        onClick: (event, rowData) => alert("You want to delete " + rowData.name)
+                    }
+                ]}
+                options={{
+                    actionsColumnIndex: -1
+                }}
+            />
+
+                {artworkToEdit && <Redirect to={`/artwork-form/${artworkToEdit}`}/>}
+
+        </>
     )
 }
 

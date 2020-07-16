@@ -14,8 +14,8 @@ import {getArtworkById} from "../../../../redux/artworkReducer";
 const ChapterTools = (props) => {
 
     const imgUrl = useSelector(state => {
-        // return state.artworkFormReducer.chapters[props.index].imgUrl
-        return null
+        return state.artworkFormReducer.chapters[props.index]?.imgUrl
+        // return null
     });
 
     const dispatch = useDispatch();

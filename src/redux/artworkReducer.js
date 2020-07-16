@@ -3,19 +3,25 @@ import {artworkAPI} from "../api/api";
 const SET_ARTWORKS_PREVIEWS = "SET_ARTWORKS_PREVIEWS";
 const SET_PAGES_COUNT = "SET_PAGES_COUNT";
 const SET_CURRENT_ARTWORK = "SET_CURRENT_ARTWORK";
+const RESET_STATE = "RESET_STATE";
 
 let initialState = {
     artworksPreviews: [],
     pagesCount: 0,
     currentArtwork: {
         genre: "",
-        chapters: ""
+        chapters: "",
+        averageRating: 0,
+        userRating: null
     }
 };
 
 const artworkReducer = (state = initialState, action) => {
 
     switch (action.type) {
+
+        case RESET_STATE:
+            return initialState;
 
         case SET_ARTWORKS_PREVIEWS:
             return {
@@ -48,6 +54,12 @@ export const setPagesCount = (pagesCount) => {
     return {
         type: SET_PAGES_COUNT,
         pagesCount
+    }
+};
+
+export const resetCurrentArtworkState = () => {
+    return {
+        type: RESET_STATE
     }
 };
 

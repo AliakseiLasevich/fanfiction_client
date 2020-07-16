@@ -13,7 +13,7 @@ import {
     submitArtwork
 } from "../../../../redux/artworkFormReducer";
 import {useRouteMatch} from "react-router-dom";
-import {getArtworkById} from "../../../../redux/artworkReducer";
+import {getArtworkById, resetCurrentArtworkState} from "../../../../redux/artworkReducer";
 
 const ArtworkForm = (props) => {
 

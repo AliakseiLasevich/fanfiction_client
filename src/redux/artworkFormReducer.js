@@ -1,7 +1,7 @@
 import {cloudinaryApi, artworkAPI} from "../api/api";
 
 const SET_TAGS = "SET_TAGS";
-
+const RESET_STATE = "RESET_STATE";
 const ADD_CHAPTER = "ADD_CHAPTER";
 const SET_CHAPTERS = "SET_CHAPTERS";
 const REMOVE_CHAPTER = "REMOVE_CHAPTER";
@@ -27,6 +27,9 @@ const initialState = {
 
 const artworkFormReducer = (state = initialState, action) => {
     switch (action.type) {
+
+        case RESET_STATE:
+            return initialState;
 
         case ADD_CHAPTER:
             const newChapter = {
@@ -109,7 +112,7 @@ const artworkFormReducer = (state = initialState, action) => {
                 ...state, tags: action.tags
             };
 
-            case SET_GENRES:
+        case SET_GENRES:
             return {
                 ...state, genres: action.genres
             };
@@ -121,6 +124,12 @@ const artworkFormReducer = (state = initialState, action) => {
 
 };
 
+
+export const resetArtworkFormChaptersState = () => {
+    return {
+        type: RESET_STATE
+    }
+};
 
 export const addChapterAC = (chapter) => {
     return {

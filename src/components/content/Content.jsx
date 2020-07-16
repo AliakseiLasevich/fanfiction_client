@@ -28,6 +28,8 @@ const Content = (props) => {
                                                                               authorName={artwork.authorName}
                                                                               name={artwork.name}
                                                                               summary={artwork.summary}
+                                                                              creationDate={artwork.creationDate}
+
 
 
     />);

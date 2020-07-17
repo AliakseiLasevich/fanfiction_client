@@ -59,13 +59,24 @@ export const artworkAPI = {
     getArtworksPreviewsBySearch(textToSearch) {
         return instance.get(`/search?search=${textToSearch}`)
     },
-    getTags(){
+    getTags() {
         return instance.get(`/tags`, {headers: getHeaders(jwt)})
     },
-    getGenres(){
+    getGenres() {
         return instance.get(`/genres`, {headers: getHeaders(jwt)})
     }
+};
 
+export const likeApi = {
+    getLike(userId, artworkId) {
+        return instance.get(`/likes/${userId}/${artworkId}`, {headers: getHeaders(jwt)})
+    },
+    postLike(userId, artworkId, chapterNumber, like) {
+        return instance.post(`/likes/${userId}/${artworkId}/${chapterNumber}`, like, {headers: getHeaders(jwt)})
+    },
+    putLike(userId, artworkId, chapterNumber, like) {
+        return instance.put(`/likes/${userId}/${artworkId}/${chapterNumber}`, like, {headers: getHeaders(jwt)})
+    },
 };
 
 export const cloudinaryApi = {

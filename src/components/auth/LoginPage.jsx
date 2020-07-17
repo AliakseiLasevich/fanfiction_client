@@ -15,7 +15,6 @@ const LoginPage = (props) => {
     const onSubmit = ({email, password}) => {
         let user = {email, password};
         dispatch(login(user));
-
     };
 
     return (

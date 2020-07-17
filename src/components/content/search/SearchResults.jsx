@@ -22,12 +22,12 @@ const SearchResults = (props) => {
         return state.artworkReducer.artworksPreviews;
     });
 
-    const artworkComponents = artworksPreviews.map(artwork => <ArtworkPreview key={artwork.artworkId}
-                                                                              artworkId={artwork.artworkId}
-                                                                              authorId={artwork.authorId}
-                                                                              authorName={artwork.authorName}
-                                                                              name={artwork.name}
-                                                                              summary={artwork.summary}
+    const artworkComponents = artworksPreviews?.map(artwork => <ArtworkPreview key={artwork?.artworkId}
+                                                                              artworkId={artwork?.artworkId}
+                                                                              authorId={artwork?.authorId}
+                                                                              authorName={artwork?.authorName}
+                                                                              name={artwork?.name}
+                                                                              summary={artwork?.summary}
 
 
     />);

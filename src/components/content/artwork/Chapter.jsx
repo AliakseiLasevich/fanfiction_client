@@ -1,11 +1,11 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import LikeButton from "./LikeButton";
 
 const Chapter = (props) => {
 
+
     return (
-        <div className="container border p-2 m-2" key={props.chapterId}>
+        <div className="container" key={props.chapterId}>
             <div className="row justify-content-center">
                 <h2 className="text-center">{`${props.chapterNumber}. ${props.chapterTitle}`}</h2></div>
             {props.imageUrl &&
@@ -15,7 +15,6 @@ const Chapter = (props) => {
             }
             <div className="row justify-content-center p-3"><ReactMarkdown source={props.content}/></div>
             <div className="row justify-content-center">
-                <LikeButton/>
             </div>
         </div>
     )

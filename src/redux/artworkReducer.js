@@ -1,6 +1,7 @@
-import {artworkAPI} from "../api/api";
+import {artworkAPI, likeApi} from "../api/api";
 
 const SET_ARTWORKS_PREVIEWS = "SET_ARTWORKS_PREVIEWS";
+const SET_USER_LIKES = "SET_USER_LIKES";
 const SET_PAGES_COUNT = "SET_PAGES_COUNT";
 const SET_CURRENT_ARTWORK = "SET_CURRENT_ARTWORK";
 const RESET_STATE = "RESET_STATE";
@@ -12,7 +13,8 @@ let initialState = {
         genre: "",
         chapters: "",
         averageRating: 0,
-        userRating: null
+        userRating: null,
+        userLikes: null
     }
 };
 
@@ -36,6 +38,15 @@ const artworkReducer = (state = initialState, action) => {
         case SET_CURRENT_ARTWORK:
             return {
                 ...state, currentArtwork: action.currentArtwork
+            };
+
+        case SET_USER_LIKES:
+            return {
+                ...state,
+                currentArtwork: {
+                    ...state.currentArtwork,
+                    userLikes: action.userLikes
+                }
             };
 
         default:
@@ -75,6 +86,32 @@ export const getArtworkById = (artworkId) => {
         artworkAPI.getArtworkById(artworkId)
             .then(response => {
                 dispatch(setCurrentArtwork(response.data))
+            })
+    }
+};
+
+export const setUserLikes = (userLikes) => {
+    return {
+        type: SET_USER_LIKES,
+        userLikes
+    }
+};
+export const postLike = (userId, artworkId, chapterNumber) => {
+    const like = {like: true}
+    return (dispatch) => {
+        likeApi.postLike(userId, artworkId, chapterNumber, like)
+            .then(response => {
+                console.log(response.data);
+                dispatch(getUserLikes(userId, artworkId));
+            })
+    }
+};
+
+export const getUserLikes = (userId, artworkId) => {
+    return (dispatch) => {
+        likeApi.getLike(userId, artworkId)
+            .then(response => {
+                dispatch(setUserLikes(response.data))
             })
     }
 }

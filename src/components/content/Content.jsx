@@ -35,7 +35,6 @@ const Content = (props) => {
     />);
 
     return (
-        <div>
             <div className="row">
                 <div className="align-self-center p-4 col-9">
                     {artworkComponents}
@@ -43,7 +42,7 @@ const Content = (props) => {
                 </div>
                 <div className="align-self-center p-4 col-3"><Sidebar/></div>
             </div>
-        </div>
+
     )
 };
 

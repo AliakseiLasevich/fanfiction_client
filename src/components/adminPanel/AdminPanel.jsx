@@ -15,8 +15,6 @@ const AdminPanel = (props) => {
 
             <Route exact path="/admin-panel/users-management"
                    render={() => <UsersManagement/>}/>
-
-
         </div>
     )
 };

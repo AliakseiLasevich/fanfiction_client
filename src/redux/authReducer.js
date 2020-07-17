@@ -22,11 +22,7 @@ const authReducer = (state = initialState, action) => {
             };
 
         case LOGOUT:
-            return {
-                logged: false,
-                jwt: null,
-                currentUser: {}
-            };
+            return initialState;
 
         case SET_JWT:
             return {
@@ -91,7 +87,6 @@ export const login = (user) => {
     return (dispatch) => {
         usersAPI.login(user)
             .then(response => {
-
                     dispatch(getUserById(response.headers.userid, response.headers.authorization))
                         .then((user) => {
                                 dispatch(authorizeUser(user.userId, response.headers.authorization))

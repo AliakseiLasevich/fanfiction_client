@@ -60,7 +60,7 @@ const UserAccount = () => {
                     <input className="form-control text-center"
                            onChange={(value) => onNameChange(value)}
                            type="text"
-                           placeholder="First Name"
+                           placeholder="First NameInput"
                            value={currentUser.firstName}/>
                 </div>
             </div>
@@ -73,7 +73,7 @@ const UserAccount = () => {
                     <input className="form-control text-center"
                            onChange={(value) => onLastNameChange(value)}
                            type="text"
-                           placeholder="Last Name"
+                           placeholder="Last NameInput"
                            value={currentUser.lastName}/>
                 </div>
             </div>

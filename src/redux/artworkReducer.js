@@ -74,6 +74,12 @@ export const resetCurrentArtworkState = () => {
     }
 };
 
+export const resetCurrentArtworkStateThunk = () => {
+    return (dispatch) => {
+        dispatch(resetCurrentArtworkState())
+    }
+};
+
 export const setCurrentArtwork = (currentArtwork) => {
     return {
         type: SET_CURRENT_ARTWORK,

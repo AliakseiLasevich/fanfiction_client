@@ -1,14 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import ReactMde from "react-mde";
 import * as Showdown from "showdown";
 import ChapterTools from "./ChapterTools";
-import {useDispatch} from "react-redux";
-import {addContentAC, addTitleAC} from "../../../../redux/artworkFormReducer";
 
 const ChapterForm = (props) => {
 
-    const dispatch = useDispatch();
     const [selectedTab, setSelectedTab] = useState("write");
+
     const converter = new Showdown.Converter({
         tables: true,
         simplifiedAutoLink: true,
@@ -16,22 +14,24 @@ const ChapterForm = (props) => {
         tasklists: true
     });
 
-    const [contentToEdit, setContentToEdit] = useState(props.content);
-
-    useEffect(() => {
-        dispatch(addContentAC(props.index, props.content));
-        dispatch(addTitleAC(props.index, props.title));
-        setContentToEdit(props.content)
-    }, [props.content, props.title]);
-
-
     const onTitleChange = (e) => {
-        dispatch(addTitleAC(props.index, e.target.value));
+        let chapter = props.chapters[props.index];
+        chapter.title = e.target.value;
+        props.setChapters(
+            [...props.chapters.slice(0, props.index),
+                chapter,
+                ...props.chapters.slice(props.index + 1)]
+        )
     };
 
     const onContentChange = (content) => {
-        setContentToEdit(content);
-        dispatch(addContentAC(props.index, content));
+        let chapter = props.chapters[props.index];
+        chapter.content = content;
+        props.setChapters(
+            [...props.chapters.slice(0, props.index),
+                chapter,
+                ...props.chapters.slice(props.index + 1)]
+        )
     };
 
     return (
@@ -48,18 +48,19 @@ const ChapterForm = (props) => {
             <ReactMde
                 toolbarCommands={[["header"], ["bold", "italic", "strikethrough"], ["quote"]]}
                 loadingPreview={true}
-                value={contentToEdit}
+                value={props.content}
                 onChange={onContentChange}
                 selectedTab={selectedTab}
                 onTabChange={setSelectedTab}
                 generateMarkdownPreview={markdown =>
                     Promise.resolve(converter.makeHtml(markdown))
-                }
-            />
+                }/>
 
             <div className="text-center mt-2">
                 <ChapterTools
-                    index={props.index}/>
+                    index={props.index}
+                    setChapters={props.setChapters}
+                    chapters={props.chapters}/>
             </div>
         </div>
     )

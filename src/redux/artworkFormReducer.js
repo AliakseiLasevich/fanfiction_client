@@ -6,7 +6,7 @@ const ADD_CHAPTER = "ADD_CHAPTER";
 const SET_CHAPTERS = "SET_CHAPTERS";
 const REMOVE_CHAPTER = "REMOVE_CHAPTER";
 const ADD_IMAGE_URL = "ADD_IMAGE_URL";
-const REMOVE_IMAGE = "REMOVE_IMAGE";
+const REMOVE_CHAPTER_IMAGE = "REMOVE_CHAPTER_IMAGE";
 const ADD_TITLE = "ADD_TITLE";
 const ADD_CONTENT = "ADD_CONTENT";
 const SET_GENRES = "SET_GENRES";
@@ -73,7 +73,7 @@ const artworkFormReducer = (state = initialState, action) => {
                         ...state.chapters.slice(action.chapterIndex + 1)]
             };
 
-        case REMOVE_IMAGE:
+        case REMOVE_CHAPTER_IMAGE:
             let chapterToRemoveImageUrl = {...state.chapters[action.chapterIndex]};
             chapterToRemoveImageUrl.imgUrl = null;
             return {
@@ -84,28 +84,6 @@ const artworkFormReducer = (state = initialState, action) => {
                         ...state.chapters.slice(action.chapterIndex + 1)]
             };
 
-
-        case ADD_TITLE:
-            let toEdit = state.chapters[action.chapterIndex];
-            let edited = {...toEdit, title: action.title};
-            return {
-                ...state,
-                chapters:
-                    [...state.chapters.slice(0, action.chapterIndex),
-                        edited,
-                        ...state.chapters.slice(action.chapterIndex + 1)]
-            };
-
-        case ADD_CONTENT:
-            let toAddContent = state.chapters[action.chapterIndex];
-            let withContent = {...toAddContent, content: action.content};
-            return {
-                ...state,
-                chapters:
-                    [...state.chapters.slice(0, action.chapterIndex),
-                        withContent,
-                        ...state.chapters.slice(action.chapterIndex + 1)]
-            };
 
         case SET_TAGS:
             return {
@@ -125,17 +103,17 @@ const artworkFormReducer = (state = initialState, action) => {
 };
 
 
-export const resetArtworkFormChaptersState = () => {
-    return {
-        type: RESET_STATE
-    }
-};
-
-export const addChapterAC = (chapter) => {
-    return {
-        type: ADD_CHAPTER, chapter
-    }
-};
+// export const resetArtworkFormChaptersState = () => {
+//     return {
+//         type: RESET_STATE
+//     }
+// };
+//
+// export const addChapterAC = (chapter) => {
+//     return {
+//         type: ADD_CHAPTER, chapter
+//     }
+// };
 
 export const setTags = (tags) => {
     return {
@@ -155,11 +133,11 @@ export const removeChapterAC = (index) => {
     }
 };
 
-export const setChaptersAC = (chapters) => {
-    return {
-        type: SET_CHAPTERS, chapters
-    }
-};
+// export const setChaptersAC = (chapters) => {
+//     return {
+//         type: SET_CHAPTERS, chapters
+//     }
+// };
 
 export const recalculateChaptersIndexes = () => {
     return {
@@ -173,17 +151,17 @@ export const removeChapterAndIndex = (index) => {
     };
 };
 
-export const addTitleAC = (chapterIndex, title) => {
-    return {
-        type: ADD_TITLE, title, chapterIndex
-    }
-};
-
-export const addContentAC = (chapterIndex, content) => {
-    return {
-        type: ADD_CONTENT, content, chapterIndex
-    }
-};
+// export const addTitleAC = (chapterIndex, title) => {
+//     return {
+//         type: ADD_TITLE, title, chapterIndex
+//     }
+// };
+//
+// export const addContentAC = (chapterIndex, content) => {
+//     return {
+//         type: ADD_CONTENT, content, chapterIndex
+//     }
+// };
 
 export const addImageUrlAC = (chapterIndex, imgUrl) => {
     return {
@@ -193,10 +171,9 @@ export const addImageUrlAC = (chapterIndex, imgUrl) => {
 
 export const removeImageAc = (chapterIndex) => {
     return {
-        type: REMOVE_IMAGE, chapterIndex
+        type: REMOVE_CHAPTER_IMAGE, chapterIndex
     }
 };
-
 
 export const uploadImageToChapter = (files, index) => {
     const data = new FormData();

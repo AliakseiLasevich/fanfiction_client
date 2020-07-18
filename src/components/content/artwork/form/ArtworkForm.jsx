@@ -22,24 +22,27 @@ const ArtworkForm = (props) => {
     const convertTagsToList = (tags) => {
         return tags.map(tag => tag.name);
     };
-    const onSubmit = (artwork) => {
-        artwork.tags = convertTagsToList(tags);
-        // artwork.chapters = chapters;
-        dispatch(submitArtwork(artwork));
-    };
+
 
     const [genre, setGenre] = React.useState([]);
     const [tags, setTags] = React.useState([]);
     const artworkToEdit = useSelector(state => {
         return state.artworkFormReducer.artworkToEdit
     });
-
+    const newChapters = useSelector(state => {
+        return state.artworkFormReducer.chapters
+    });
+    const onSubmit = (artwork) => {
+        artwork.tags = convertTagsToList(tags);
+        artwork.chapters = newChapters;
+        dispatch(submitArtwork(artwork));
+    };
     useEffect(() => {
             dispatch(requestTags());
             dispatch(requestGenres());
             dispatch(requestArtworkToEdit(props.match.params.artworkId));
             if (!props.match.params.artworkId) {
-                dispatch(setArtworkToEdit("null"));
+                dispatch(setArtworkToEdit({}));
                 setGenre("");
                 setTags([]);
             }

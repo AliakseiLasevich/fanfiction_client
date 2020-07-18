@@ -21,9 +21,9 @@ const initialState = {
         {
             chapterNumber: 0,
             index: 0,
-            title: null,
-            content: null,
-            imgUrl: null,
+            title: "",
+            content: "",
+            imgUrl: "",
             tags: [],
             genres: []
         }
@@ -45,9 +45,10 @@ const artworkFormReducer = (state = initialState, action) => {
         case ADD_CHAPTER:
             const newChapter = {
                 index: state.chapters.length,
-                title: null,
-                content: null,
-                imgUrl: null
+                chapterNumber: state.chapters.length,
+                title: "",
+                content: "",
+                imgUrl: ""
             };
             return {
                 ...state, chapters: [...state.chapters, newChapter]
@@ -65,12 +66,35 @@ const artworkFormReducer = (state = initialState, action) => {
             };
 
         case RECALCULATE_CHAPTERS_INDEXES:
-            let chaptersCopy = JSON.parse(JSON.stringify([...state.chapters]));
+            let chaptersCopy = JSON.parse(JSON.stringify(state.chapters));
             for (let i = 0; i < chaptersCopy.length; i++) {
+                chaptersCopy[i].chapterNumber = i;
                 chaptersCopy[i].index = i;
             }
             return {
                 ...state, chapters: chaptersCopy
+            };
+
+        case ADD_TITLE:
+            let toEdit = state.chapters[action.chapterIndex];
+            let edited = {...toEdit, title: action.title};
+            return {
+                ...state,
+                chapters:
+                    [...state.chapters.slice(0, action.chapterIndex),
+                        edited,
+                        ...state.chapters.slice(action.chapterIndex + 1)]
+            };
+
+        case ADD_CONTENT:
+            let toAddContent = state.chapters[action.chapterIndex];
+            let withContent = {...toAddContent, content: action.content};
+            return {
+                ...state,
+                chapters:
+                    [...state.chapters.slice(0, action.chapterIndex),
+                        withContent,
+                        ...state.chapters.slice(action.chapterIndex + 1)]
             };
 
         case ADD_IMAGE_URL:
@@ -133,13 +157,19 @@ export const setArtworkName = (name) => {
     }
 };
 
+export const removeChapterAndIndex = (index) => {
+    return (dispatch) => {
+        dispatch(removeChapterAC(index));
+        dispatch(recalculateChaptersIndexes());
+    };
+};
 
-// export const resetArtworkFormChaptersState = () => {
-//     return {
-//         type: RESET_STATE
-//     }
-// };
-//
+export const resetArtworkFormState = () => {
+    return {
+        type: RESET_STATE
+    }
+};
+
 export const addChapterAC = (chapter) => {
     return {
         type: ADD_CHAPTER, chapter
@@ -175,24 +205,19 @@ export const recalculateChaptersIndexes = () => {
         type: RECALCULATE_CHAPTERS_INDEXES
     }
 };
-export const removeChapterAndIndex = (index) => {
-    return (dispatch) => {
-        dispatch(removeChapterAC(index));
-        dispatch(recalculateChaptersIndexes());
-    };
+
+
+export const addTitleAC = (chapterIndex, title) => {
+    return {
+        type: ADD_TITLE, title, chapterIndex
+    }
 };
 
-// export const addTitleAC = (chapterIndex, title) => {
-//     return {
-//         type: ADD_TITLE, title, chapterIndex
-//     }
-// };
-//
-// export const addContentAC = (chapterIndex, content) => {
-//     return {
-//         type: ADD_CONTENT, content, chapterIndex
-//     }
-// };
+export const addContentAC = (chapterIndex, content) => {
+    return {
+        type: ADD_CONTENT, content, chapterIndex
+    }
+};
 
 export const addImageUrlAC = (chapterIndex, imgUrl) => {
     return {

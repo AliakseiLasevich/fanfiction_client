@@ -1,5 +1,7 @@
-import {cloudinaryApi, artworkAPI} from "../api/api";
+import {artworkAPI, cloudinaryApi} from "../api/api";
 
+const SET_ARTWORK_TO_EDIT = "SET_ARTWORK_TO_EDIT";
+const SET_ARTWORK_NAME = "SET_ARTWORK_NAME";
 const SET_TAGS = "SET_TAGS";
 const RESET_STATE = "RESET_STATE";
 const ADD_CHAPTER = "ADD_CHAPTER";
@@ -13,8 +15,11 @@ const SET_GENRES = "SET_GENRES";
 const RECALCULATE_CHAPTERS_INDEXES = "RECALCULATE_CHAPTERS_INDEXES";
 
 const initialState = {
+    artworkToEdit: null,
+    name: "",
     chapters: [
         {
+            chapterNumber: 0,
             index: 0,
             title: null,
             content: null,
@@ -30,6 +35,12 @@ const artworkFormReducer = (state = initialState, action) => {
 
         case RESET_STATE:
             return initialState;
+
+        case SET_ARTWORK_TO_EDIT:
+            return {...state, artworkToEdit: action.artwork}
+
+        case SET_ARTWORK_NAME:
+            return {...state, name: action.name}
 
         case ADD_CHAPTER:
             const newChapter = {
@@ -102,6 +113,26 @@ const artworkFormReducer = (state = initialState, action) => {
 
 };
 
+export const requestArtworkToEdit = (artworkId) => {
+    return (dispatch) => {
+        artworkAPI.getArtworkById(artworkId)
+            .then(response => dispatch(setArtworkToEdit(response.data)));
+    };
+};
+
+export const setArtworkToEdit = (artwork) => {
+    return {
+        type: SET_ARTWORK_TO_EDIT,
+        artwork
+    }
+};
+export const setArtworkName = (name) => {
+    return {
+        type: SET_ARTWORK_NAME,
+        name
+    }
+};
+
 
 // export const resetArtworkFormChaptersState = () => {
 //     return {
@@ -109,11 +140,11 @@ const artworkFormReducer = (state = initialState, action) => {
 //     }
 // };
 //
-// export const addChapterAC = (chapter) => {
-//     return {
-//         type: ADD_CHAPTER, chapter
-//     }
-// };
+export const addChapterAC = (chapter) => {
+    return {
+        type: ADD_CHAPTER, chapter
+    }
+};
 
 export const setTags = (tags) => {
     return {
@@ -133,11 +164,11 @@ export const removeChapterAC = (index) => {
     }
 };
 
-// export const setChaptersAC = (chapters) => {
-//     return {
-//         type: SET_CHAPTERS, chapters
-//     }
-// };
+export const setChaptersAC = (chapters) => {
+    return {
+        type: SET_CHAPTERS, chapters
+    }
+};
 
 export const recalculateChaptersIndexes = () => {
     return {

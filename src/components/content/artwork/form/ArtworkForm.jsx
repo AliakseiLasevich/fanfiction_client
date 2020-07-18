@@ -4,60 +4,55 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 import {useForm} from "react-hook-form";
 import TagManager from "./TagManager";
 import {useDispatch, useSelector} from "react-redux";
-import {requestGenres, requestTags, submitArtwork} from "../../../../redux/artworkFormReducer";
-import {getArtworkById, resetCurrentArtworkState} from "../../../../redux/artworkReducer";
+import {
+    requestArtworkToEdit,
+    requestGenres,
+    requestTags,
+    setArtworkToEdit,
+    submitArtwork
+} from "../../../../redux/artworkFormReducer";
 import GenresInput from "./GenresInput";
 import NameInput from "./NameInput";
 import SummaryInput from "./SummaryInput";
 import ChaptersManager from "./ChaptersManager";
 
 const ArtworkForm = (props) => {
-
     const dispatch = useDispatch();
-    const [artwork, setArtwork] = React.useState([]);
-    const [genre, setGenre] = React.useState([]);
-    const [tags, setTags] = React.useState([]);
-    const [chapters, setChapters] = React.useState([{}]);
-
-    const currentArtwork = useSelector(state => {
-        return state.artworkReducer.currentArtwork
-    });
-
     const {register, handleSubmit, errors} = useForm();
-
-    const onSubmit = (artwork) => {
-        artwork.tags = convertTagsToList(tags);
-        artwork.chapters = chapters;
-        dispatch(submitArtwork(artwork));
-    };
-
     const convertTagsToList = (tags) => {
         return tags.map(tag => tag.name);
     };
+    const onSubmit = (artwork) => {
+        artwork.tags = convertTagsToList(tags);
+        // artwork.chapters = chapters;
+        dispatch(submitArtwork(artwork));
+    };
 
-    useEffect(() => {
-        if (currentArtwork.genre) {
-            setArtwork(currentArtwork);
-            setTags(currentArtwork.tags);
-            setGenre(currentArtwork.genre.name);
-            setChapters(currentArtwork.chapters);
-        }
-    }, [currentArtwork]);
+    const [genre, setGenre] = React.useState([]);
+    const [tags, setTags] = React.useState([]);
+    const artworkToEdit = useSelector(state => {
+        return state.artworkFormReducer.artworkToEdit
+    });
 
     useEffect(() => {
             dispatch(requestTags());
             dispatch(requestGenres());
-            dispatch(getArtworkById(props.match.params.artworkId));
+            dispatch(requestArtworkToEdit(props.match.params.artworkId));
             if (!props.match.params.artworkId) {
-                dispatch(resetCurrentArtworkState());
-                setArtwork({});
+                dispatch(setArtworkToEdit("null"));
                 setGenre("");
                 setTags([]);
-                setChapters([]);
             }
         }
-        , [props.match.params.artworkId]
+        , [props.match.params.artworkId, props.location, props.path]
     );
+
+    useEffect(() => {
+        if (artworkToEdit?.tags) {
+            setTags(artworkToEdit.tags);
+            setGenre(artworkToEdit.genre.name);
+        }
+    }, [artworkToEdit]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="p-3 m-3">
@@ -65,11 +60,11 @@ const ArtworkForm = (props) => {
             <h3 className="text-center">{props.match.params.artworkId ? "Edit:" : "New artwork"}</h3>
 
             <NameInput register={register}
-                       name={artwork.name}
+                       name={artworkToEdit?.name}
                        errors={errors}/>
 
             <SummaryInput register={register}
-                          summary={artwork.summary}
+                          summary={artworkToEdit?.summary}
                           errors={errors}/>
 
             <GenresInput register={register}
@@ -80,8 +75,7 @@ const ArtworkForm = (props) => {
             <TagManager tags={tags}
                         setTags={setTags}/>
 
-            <ChaptersManager chapters={chapters}
-                             setChapters={setChapters}/>
+            <ChaptersManager artworkId={props.match.params.artworkId}/>
 
             <div className="text-center m-4">
                 <button className="btn btn-success w-25">Submit</button>

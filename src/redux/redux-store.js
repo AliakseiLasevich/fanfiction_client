@@ -7,7 +7,6 @@ import artworkReducer from "./artworkReducer";
 import dashboardReducer from "./dashboardReducer";
 
 
-
 let reducers = combineReducers({
     authReducer: authReducer,
     usersReducer: usersReducer,
@@ -16,7 +15,8 @@ let reducers = combineReducers({
     dashboardReducer: dashboardReducer
 });
 
-let store = createStore(reducers, applyMiddleware(thunkMiddleware));
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+const store = createStore(reducers, composeEnhancers(applyMiddleware(thunkMiddleware)));
 window.store = store;
 
 export default store;

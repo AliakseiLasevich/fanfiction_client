@@ -7,7 +7,7 @@ import {removeChapterAndIndex, removeImageAc, uploadImageToChapter} from "../../
 const ChapterTools = (props) => {
 
     const imgUrl = useSelector(state => {
-        return state.artworkFormReducer.chapters[props.index]?.imgUrl
+        return state.artworkFormReducer.chapters[props.index]?.imageUrl
     });
 
     const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const ChapterTools = (props) => {
             <div className="d-block align-middle btn" onClick={() => {
                 removeImage()
             }}>
-                <img src={imgUrl} alt={imgUrl}/>
+                <img src={imgUrl} alt="image was here"/>
                 <p>Click to remove</p>
             </div>}
 

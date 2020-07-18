@@ -13,6 +13,7 @@ const ADD_TITLE = "ADD_TITLE";
 const ADD_CONTENT = "ADD_CONTENT";
 const SET_GENRES = "SET_GENRES";
 const RECALCULATE_CHAPTERS_INDEXES = "RECALCULATE_CHAPTERS_INDEXES";
+const SET_SUBMITTED_ARTWORK_ID = "SET_SUBMITTED_ARTWORK_ID";
 
 const initialState = {
     artworkToEdit: null,
@@ -23,11 +24,12 @@ const initialState = {
             index: 0,
             title: "",
             content: "",
-            imgUrl: "",
             tags: [],
-            genres: []
+            genres: [],
+            imageUrl: ""
         }
-    ]
+    ],
+    submittedId: false
 };
 
 const artworkFormReducer = (state = initialState, action) => {
@@ -48,7 +50,7 @@ const artworkFormReducer = (state = initialState, action) => {
                 chapterNumber: state.chapters.length,
                 title: "",
                 content: "",
-                imgUrl: ""
+                imageUrl: ""
             };
             return {
                 ...state, chapters: [...state.chapters, newChapter]
@@ -99,7 +101,7 @@ const artworkFormReducer = (state = initialState, action) => {
 
         case ADD_IMAGE_URL:
             let chapterToAddImageUrl = {...state.chapters[action.chapterIndex]};
-            let editedChapter = {...chapterToAddImageUrl, imgUrl: action.imgUrl};
+            let editedChapter = {...chapterToAddImageUrl, imageUrl: action.imageUrl};
             return {
                 ...state,
                 chapters:
@@ -110,7 +112,7 @@ const artworkFormReducer = (state = initialState, action) => {
 
         case REMOVE_CHAPTER_IMAGE:
             let chapterToRemoveImageUrl = {...state.chapters[action.chapterIndex]};
-            chapterToRemoveImageUrl.imgUrl = null;
+            chapterToRemoveImageUrl.imageUrl = null;
             return {
                 ...state,
                 chapters:
@@ -128,6 +130,11 @@ const artworkFormReducer = (state = initialState, action) => {
         case SET_GENRES:
             return {
                 ...state, genres: action.genres
+            };
+
+        case SET_SUBMITTED_ARTWORK_ID:
+            return {
+                ...state, submittedId: action.submittedId
             };
 
 
@@ -219,15 +226,21 @@ export const addContentAC = (chapterIndex, content) => {
     }
 };
 
-export const addImageUrlAC = (chapterIndex, imgUrl) => {
+export const addImageUrlAC = (chapterIndex, imageUrl) => {
     return {
-        type: ADD_IMAGE_URL, chapterIndex, imgUrl
+        type: ADD_IMAGE_URL, chapterIndex, imageUrl
     }
 };
 
 export const removeImageAc = (chapterIndex) => {
     return {
         type: REMOVE_CHAPTER_IMAGE, chapterIndex
+    }
+};
+
+export const setSubmittedId = (submittedId) => {
+    return {
+        type: SET_SUBMITTED_ARTWORK_ID, submittedId
     }
 };
 
@@ -246,7 +259,7 @@ export const uploadImageToChapter = (files, index) => {
 export const submitArtwork = (artwork) => {
     return (dispatch) => {
         artworkAPI.postArtwork(artwork)
-            .then(response => console.log(response));
+            .then(response => dispatch(setSubmittedId(response.data.artworkId)));
     };
 
 };

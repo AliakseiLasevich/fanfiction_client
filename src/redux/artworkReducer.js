@@ -107,7 +107,6 @@ export const postLike = (userId, artworkId, chapterNumber) => {
     return (dispatch) => {
         likeApi.postLike(userId, artworkId, chapterNumber, like)
             .then(response => {
-                console.log(response.data);
                 dispatch(getUserLikes(userId, artworkId));
             })
     }

@@ -10,9 +10,6 @@ const Content = (props) => {
 
     const dispatch = useDispatch();
     const [currentPage, setCurrentPage] = useState(1);
-    const logged = useSelector(state => {
-        return state.authReducer.logged;
-    });
 
     const artworksPreviews = useSelector(state => {
         return state.artworkReducer.artworksPreviews;

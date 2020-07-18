@@ -21,7 +21,6 @@ const ChapterForm = (props) => {
     };
 
     const onContentChange = (content) => {
-        console.log("addcontent")
         dispatch(addContentAC(props.index, content))
     };
 
@@ -49,9 +48,7 @@ const ChapterForm = (props) => {
 
             <div className="text-center mt-2">
                 <ChapterTools
-                    index={props.index}
-                    setChapters={props.setChapters}
-                    chapters={props.chapters}/>
+                    index={props.index}/>
             </div>
         </div>
     )

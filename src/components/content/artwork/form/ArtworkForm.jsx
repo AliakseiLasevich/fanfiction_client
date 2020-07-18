@@ -15,6 +15,7 @@ import GenresInput from "./GenresInput";
 import NameInput from "./NameInput";
 import SummaryInput from "./SummaryInput";
 import ChaptersManager from "./ChaptersManager";
+import {Redirect} from "react-router";
 
 const ArtworkForm = (props) => {
     const dispatch = useDispatch();
@@ -28,6 +29,9 @@ const ArtworkForm = (props) => {
     const [tags, setTags] = React.useState([]);
     const artworkToEdit = useSelector(state => {
         return state.artworkFormReducer.artworkToEdit
+    });
+    const submittedId = useSelector(state => {
+        return state.artworkFormReducer.submittedId
     });
     const newChapters = useSelector(state => {
         return state.artworkFormReducer.chapters
@@ -83,6 +87,9 @@ const ArtworkForm = (props) => {
             <div className="text-center m-4">
                 <button className="btn btn-success w-25">Submit</button>
             </div>
+
+            {submittedId && <Redirect to={`/artworks/id/${submittedId}`}/>}
+
         </form>
     )
 };

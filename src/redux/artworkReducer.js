@@ -11,7 +11,7 @@ let initialState = {
     pagesCount: 0,
     currentArtwork: {
         genre: "",
-        chapters: "",
+        chapters: [],
         averageRating: 0,
         userRating: null,
         userLikes: null
@@ -119,7 +119,7 @@ export const getUserLikes = (userId, artworkId) => {
                 dispatch(setUserLikes(response.data))
             })
     }
-}
+};
 
 export const getArtworksPreviews = (page) => {
     return (dispatch) => {

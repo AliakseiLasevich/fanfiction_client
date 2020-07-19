@@ -30,7 +30,6 @@ function App() {
     return (
         <div className="container">
             <Navbar/>
-
             <Switch>
                 <Route path="/register" render={() => <RegisterPage/>}/>
                 <Route path="/email-verification/:token" render={() => <EmailVerificationResult/>}/>
@@ -39,7 +38,7 @@ function App() {
                 <Route path="/admin-panel" render={() => <AdminPanel/>}/>
                 <Route exact path={["/", "/artworks/:page"]} render={() => <Content/>}/>
                 <Route path="/artwork-form/:artworkId?" component={ArtworkForm}/>
-                <Route path="/artworks/id/:artworkId" render={() => <Artwork/>}/>
+                <Route path="/artworks/id/:artworkId" component={Artwork}/> }/>
                 <Route exact path="/search/:textToSearch" render={() => <SearchResults/>}/>
                 <Route component={PageNotFound}/>
             </Switch>

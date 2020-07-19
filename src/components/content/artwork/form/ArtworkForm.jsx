@@ -9,13 +9,14 @@ import {
     requestGenres,
     requestTags,
     setArtworkToEdit,
-    submitArtwork
+    submitArtwork, updateArtwork
 } from "../../../../redux/artworkFormReducer";
 import GenresInput from "./GenresInput";
 import NameInput from "./NameInput";
 import SummaryInput from "./SummaryInput";
 import ChaptersManager from "./ChaptersManager";
 import {Redirect} from "react-router";
+import {useMemo} from "react";
 
 const ArtworkForm = (props) => {
     const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const ArtworkForm = (props) => {
         return tags.map(tag => tag.name);
     };
 
+    let artworkIdToEdit = useMemo(() => props.match.params.artworkId, [props.match.params.artworkId])
 
     const [genre, setGenre] = React.useState([]);
     const [tags, setTags] = React.useState([]);
@@ -33,25 +35,35 @@ const ArtworkForm = (props) => {
     const submittedId = useSelector(state => {
         return state.artworkFormReducer.submittedId
     });
+    const likes = useSelector(state => {
+        return state.artworkFormReducer.submittedId
+    });
     const newChapters = useSelector(state => {
         return state.artworkFormReducer.chapters
     });
+
     const onSubmit = (artwork) => {
         artwork.tags = convertTagsToList(tags);
         artwork.chapters = newChapters;
-        dispatch(submitArtwork(artwork));
+        artwork.likes = likes;
+        debugger
+        if (artworkIdToEdit) {
+            dispatch(updateArtwork(artwork, artworkIdToEdit))
+        } else {
+            dispatch(submitArtwork(artwork));
+        }
     };
     useEffect(() => {
             dispatch(requestTags());
             dispatch(requestGenres());
-            dispatch(requestArtworkToEdit(props.match.params.artworkId));
-            if (!props.match.params.artworkId) {
+            dispatch(requestArtworkToEdit(artworkIdToEdit));
+            if (!artworkIdToEdit) {
                 dispatch(setArtworkToEdit({}));
                 setGenre("");
                 setTags([]);
             }
         }
-        , [props.match.params.artworkId, props.location, props.path]
+        , [artworkIdToEdit, props.location, props.path]
     );
 
     useEffect(() => {
@@ -64,7 +76,7 @@ const ArtworkForm = (props) => {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="p-3 m-3">
 
-            <h3 className="text-center">{props.match.params.artworkId ? "Edit:" : "New artwork"}</h3>
+            <h3 className="text-center">{artworkIdToEdit ? "Edit:" : "New artwork"}</h3>
 
             <NameInput register={register}
                        name={artworkToEdit?.name}
@@ -82,7 +94,7 @@ const ArtworkForm = (props) => {
             <TagManager tags={tags}
                         setTags={setTags}/>
 
-            <ChaptersManager artworkId={props.match.params.artworkId}/>
+            <ChaptersManager artworkId={artworkIdToEdit}/>
 
             <div className="text-center m-4">
                 <button className="btn btn-success w-25">Submit</button>

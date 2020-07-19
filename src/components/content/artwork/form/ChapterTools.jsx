@@ -2,7 +2,7 @@ import React from "react";
 import {FaRegImage, FaTrashAlt} from "react-icons/fa";
 import Dropzone from "react-dropzone";
 import {useDispatch, useSelector} from "react-redux";
-import {removeChapterAndIndex, removeImageAc, uploadImageToChapter} from "../../../../redux/artworkFormReducer";
+import {removeChapterAndRecalculateIndex, removeImageAc, uploadImageToChapter} from "../../../../redux/artworkFormReducer";
 
 const ChapterTools = (props) => {
 
@@ -13,7 +13,7 @@ const ChapterTools = (props) => {
     const dispatch = useDispatch();
 
     const removeChapter = (index) => {
-        dispatch(removeChapterAndIndex(index));
+        dispatch(removeChapterAndRecalculateIndex(index));
     };
 
     const uploadImage = (image) => {

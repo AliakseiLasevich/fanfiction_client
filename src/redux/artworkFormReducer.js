@@ -21,7 +21,6 @@ const initialState = {
     chapters: [
         {
             chapterNumber: 0,
-            index: 0,
             title: "",
             content: "",
             tags: [],
@@ -46,7 +45,6 @@ const artworkFormReducer = (state = initialState, action) => {
 
         case ADD_CHAPTER:
             const newChapter = {
-                index: state.chapters.length,
                 chapterNumber: state.chapters.length,
                 title: "",
                 content: "",
@@ -62,7 +60,7 @@ const artworkFormReducer = (state = initialState, action) => {
             };
 
         case REMOVE_CHAPTER:
-            const filteredChapters = state.chapters.filter(chapter => chapter.index !== action.index);
+            const filteredChapters = state.chapters.filter(chapter => chapter.chapterNumber !== action.chapterNumber);
             return {
                 ...state, chapters: filteredChapters
             };
@@ -71,54 +69,53 @@ const artworkFormReducer = (state = initialState, action) => {
             let chaptersCopy = JSON.parse(JSON.stringify(state.chapters));
             for (let i = 0; i < chaptersCopy.length; i++) {
                 chaptersCopy[i].chapterNumber = i;
-                chaptersCopy[i].index = i;
             }
             return {
                 ...state, chapters: chaptersCopy
             };
 
         case ADD_TITLE:
-            let toEdit = state.chapters[action.chapterIndex];
+            let toEdit = state.chapters[action.chapterNumber];
             let edited = {...toEdit, title: action.title};
             return {
                 ...state,
                 chapters:
-                    [...state.chapters.slice(0, action.chapterIndex),
+                    [...state.chapters.slice(0, action.chapterNumber),
                         edited,
-                        ...state.chapters.slice(action.chapterIndex + 1)]
+                        ...state.chapters.slice(action.chapterNumber + 1)]
             };
 
         case ADD_CONTENT:
-            let toAddContent = state.chapters[action.chapterIndex];
+            let toAddContent = state.chapters[action.chapterNumber];
             let withContent = {...toAddContent, content: action.content};
             return {
                 ...state,
                 chapters:
-                    [...state.chapters.slice(0, action.chapterIndex),
+                    [...state.chapters.slice(0, action.chapterNumber),
                         withContent,
-                        ...state.chapters.slice(action.chapterIndex + 1)]
+                        ...state.chapters.slice(action.chapterNumber + 1)]
             };
 
         case ADD_IMAGE_URL:
-            let chapterToAddImageUrl = {...state.chapters[action.chapterIndex]};
+            let chapterToAddImageUrl = {...state.chapters[action.chapterNumber]};
             let editedChapter = {...chapterToAddImageUrl, imageUrl: action.imageUrl};
             return {
                 ...state,
                 chapters:
-                    [...state.chapters.slice(0, action.chapterIndex),
+                    [...state.chapters.slice(0, action.chapterNumber),
                         editedChapter,
-                        ...state.chapters.slice(action.chapterIndex + 1)]
+                        ...state.chapters.slice(action.chapterNumber + 1)]
             };
 
         case REMOVE_CHAPTER_IMAGE:
-            let chapterToRemoveImageUrl = {...state.chapters[action.chapterIndex]};
+            let chapterToRemoveImageUrl = {...state.chapters[action.chapterNumber]};
             chapterToRemoveImageUrl.imageUrl = null;
             return {
                 ...state,
                 chapters:
-                    [...state.chapters.slice(0, action.chapterIndex),
+                    [...state.chapters.slice(0, action.chapterNumber),
                         chapterToRemoveImageUrl,
-                        ...state.chapters.slice(action.chapterIndex + 1)]
+                        ...state.chapters.slice(action.chapterNumber + 1)]
             };
 
 
@@ -164,9 +161,9 @@ export const setArtworkName = (name) => {
     }
 };
 
-export const removeChapterAndIndex = (index) => {
+export const removeChapterAndRecalculateIndex = (chapterNumber) => {
     return (dispatch) => {
-        dispatch(removeChapterAC(index));
+        dispatch(removeChapterAC(chapterNumber));
         dispatch(recalculateChaptersIndexes());
     };
 };
@@ -195,9 +192,9 @@ export const setGenres = (genres) => {
     }
 };
 
-export const removeChapterAC = (index) => {
+export const removeChapterAC = (chapterNumber) => {
     return {
-        type: REMOVE_CHAPTER, index
+        type: REMOVE_CHAPTER, chapterNumber
     }
 };
 
@@ -214,27 +211,27 @@ export const recalculateChaptersIndexes = () => {
 };
 
 
-export const addTitleAC = (chapterIndex, title) => {
+export const addTitleAC = (chapterNumber, title) => {
     return {
-        type: ADD_TITLE, title, chapterIndex
+        type: ADD_TITLE, title, chapterNumber
     }
 };
 
-export const addContentAC = (chapterIndex, content) => {
+export const addContentAC = (chapterNumber, content) => {
     return {
-        type: ADD_CONTENT, content, chapterIndex
+        type: ADD_CONTENT, content, chapterNumber
     }
 };
 
-export const addImageUrlAC = (chapterIndex, imageUrl) => {
+export const addImageUrlAC = (chapterNumber, imageUrl) => {
     return {
-        type: ADD_IMAGE_URL, chapterIndex, imageUrl
+        type: ADD_IMAGE_URL, chapterNumber, imageUrl
     }
 };
 
-export const removeImageAc = (chapterIndex) => {
+export const removeImageAc = (chapterNumber) => {
     return {
-        type: REMOVE_CHAPTER_IMAGE, chapterIndex
+        type: REMOVE_CHAPTER_IMAGE, chapterNumber
     }
 };
 
@@ -244,14 +241,14 @@ export const setSubmittedId = (submittedId) => {
     }
 };
 
-export const uploadImageToChapter = (files, index) => {
+export const uploadImageToChapter = (files, chapterNumber) => {
     const data = new FormData();
     data.append('file', files[0]);
     data.append('upload_preset', 'fanfic');
     return (dispatch) => {
         cloudinaryApi.upload(data)
             .then(response => {
-                dispatch(addImageUrlAC(index, response.data.secure_url))
+                dispatch(addImageUrlAC(chapterNumber, response.data.secure_url))
             });
     };
 };
@@ -261,7 +258,12 @@ export const submitArtwork = (artwork) => {
         artworkAPI.postArtwork(artwork)
             .then(response => dispatch(setSubmittedId(response.data.artworkId)));
     };
-
+};
+export const updateArtwork = (artwork, artworkId) => {
+    return (dispatch) => {
+        artworkAPI.putArtwork(artwork, artworkId)
+            .then(response => dispatch(setSubmittedId(response.data.artworkId)));
+    };
 };
 
 export const requestTags = () => {

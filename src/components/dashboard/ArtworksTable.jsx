@@ -17,7 +17,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import {getArtworksPreviewsByUserId} from "../../redux/artworkReducer";
+import {deleteArtworkByIdAC, getArtworksPreviewsByUserId} from "../../redux/artworkReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {NavLink, Redirect, Route} from "react-router-dom";
 
@@ -37,6 +37,10 @@ const ArtworksTable = (props) => {
     }, [currentUser]);
 
     const [artworkToEdit, setArtworkToEdit] = useState(null);
+
+    const deleteArtwork = (artworkId, userId) => {
+        dispatch(deleteArtworkByIdAC(artworkId, userId));
+    };
 
 
     const tableIcons = {
@@ -81,7 +85,7 @@ const ArtworksTable = (props) => {
                     {
                         icon: Delete,
                         tooltip: 'Delete',
-                        onClick: (event, rowData) => alert("You want to delete " + rowData.name)
+                        onClick: (event, rowData) => deleteArtwork(rowData.artworkId, currentUser.userId)
                     }
                 ]}
                 options={{

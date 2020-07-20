@@ -6,7 +6,7 @@ import {NavLink, Route, withRouter} from "react-router-dom";
 const AdminPanel = (props) => {
 
     return (
-        <div>
+        <div className="p-1 m-1">
             <NavLink to="/admin-panel/users-management">
                 <button className="btn btn-success btn-lg" type="button">
                     <FaUserCog/> Users management

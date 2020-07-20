@@ -46,7 +46,6 @@ const ArtworkForm = (props) => {
         artwork.tags = convertTagsToList(tags);
         artwork.chapters = newChapters;
         artwork.likes = likes;
-        debugger
         if (artworkIdToEdit) {
             dispatch(updateArtwork(artwork, artworkIdToEdit))
         } else {

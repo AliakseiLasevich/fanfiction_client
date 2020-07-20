@@ -150,5 +150,14 @@ export const getArtworksPreviewsBySearch = (textToSearch) => {
     }
 };
 
+export const deleteArtworkByIdAC = (artworkId, userId) => {
+    return (dispatch) => {
+        artworkAPI.deleteArtwork(artworkId)
+            .then(response => {
+                dispatch(getArtworksPreviewsByUserId(userId))
+            })
+    }
+};
+
 
 export default artworkReducer;

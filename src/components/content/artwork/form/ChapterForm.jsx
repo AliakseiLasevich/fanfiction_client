@@ -2,9 +2,11 @@ import React, {useState} from "react";
 import ReactMde from "react-mde";
 import * as Showdown from "showdown";
 import ChapterTools from "./ChapterTools";
+import {useDispatch} from "react-redux";
+import {addContentAC, addTitleAC} from "../../../../redux/artworkFormReducer";
 
 const ChapterForm = (props) => {
-
+    const dispatch = useDispatch();
     const [selectedTab, setSelectedTab] = useState("write");
 
     const converter = new Showdown.Converter({
@@ -15,23 +17,11 @@ const ChapterForm = (props) => {
     });
 
     const onTitleChange = (e) => {
-        let chapter = props.chapters[props.index];
-        chapter.title = e.target.value;
-        props.setChapters(
-            [...props.chapters.slice(0, props.index),
-                chapter,
-                ...props.chapters.slice(props.index + 1)]
-        )
+        dispatch(addTitleAC(props.index, e.target.value))
     };
 
     const onContentChange = (content) => {
-        let chapter = props.chapters[props.index];
-        chapter.content = content;
-        props.setChapters(
-            [...props.chapters.slice(0, props.index),
-                chapter,
-                ...props.chapters.slice(props.index + 1)]
-        )
+        dispatch(addContentAC(props.index, content))
     };
 
     return (
@@ -58,9 +48,7 @@ const ChapterForm = (props) => {
 
             <div className="text-center mt-2">
                 <ChapterTools
-                    index={props.index}
-                    setChapters={props.setChapters}
-                    chapters={props.chapters}/>
+                    index={props.index}/>
             </div>
         </div>
     )

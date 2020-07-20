@@ -11,7 +11,7 @@ let initialState = {
     pagesCount: 0,
     currentArtwork: {
         genre: "",
-        chapters: "",
+        chapters: [],
         averageRating: 0,
         userRating: null,
         userLikes: null
@@ -96,15 +96,6 @@ export const getArtworkById = (artworkId) => {
     }
 };
 
-export const deleteArtworkByIdAC = (artworkId, userId) => {
-    return (dispatch) => {
-        artworkAPI.deleteArtwork(artworkId)
-            .then(response => {
-                dispatch(getArtworksPreviewsByUserId(userId))
-            })
-    }
-};
-
 export const setUserLikes = (userLikes) => {
     return {
         type: SET_USER_LIKES,
@@ -116,7 +107,6 @@ export const postLike = (userId, artworkId, chapterNumber) => {
     return (dispatch) => {
         likeApi.postLike(userId, artworkId, chapterNumber, like)
             .then(response => {
-                console.log(response.data);
                 dispatch(getUserLikes(userId, artworkId));
             })
     }
@@ -129,7 +119,7 @@ export const getUserLikes = (userId, artworkId) => {
                 dispatch(setUserLikes(response.data))
             })
     }
-}
+};
 
 export const getArtworksPreviews = (page) => {
     return (dispatch) => {

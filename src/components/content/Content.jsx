@@ -10,6 +10,9 @@ const Content = (props) => {
 
     const dispatch = useDispatch();
     const [currentPage, setCurrentPage] = useState(1);
+    const logged = useSelector(state => {
+        return state.authReducer.logged;
+    });
 
     const artworksPreviews = useSelector(state => {
         return state.artworkReducer.artworksPreviews;
@@ -37,7 +40,7 @@ const Content = (props) => {
                     {artworkComponents}
                     <Paginator setCurrentPage={setCurrentPage}/>
                 </div>
-                <div className="align-self-baseline p-4 col-3"><Sidebar/></div>
+                <div className="align-self-center p-4 col-3"><Sidebar/></div>
             </div>
 
     )

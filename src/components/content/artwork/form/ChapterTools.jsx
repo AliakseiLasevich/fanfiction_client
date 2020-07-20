@@ -2,18 +2,27 @@ import React from "react";
 import {FaRegImage, FaTrashAlt} from "react-icons/fa";
 import Dropzone from "react-dropzone";
 import {useDispatch, useSelector} from "react-redux";
-import {removeChapterAndRecalculateIndex, removeImageAc, uploadImageToChapter} from "../../../../redux/artworkFormReducer";
+import {removeImageAc, uploadImageToChapter} from "../../../../redux/artworkFormReducer";
 
 const ChapterTools = (props) => {
 
     const imgUrl = useSelector(state => {
-        return state.artworkFormReducer.chapters[props.index]?.imageUrl
+        return state.artworkFormReducer.chapters[props.index]?.imgUrl
     });
 
     const dispatch = useDispatch();
 
     const removeChapter = (index) => {
-        dispatch(removeChapterAndRecalculateIndex(index));
+        let ch = [...props.chapters.slice(0, props.index),
+            ...props.chapters.slice(props.index + 1)]
+        props.setChapters(recalculateChaptersIndexes(ch));
+    };
+
+    const recalculateChaptersIndexes = (chapters) => {
+        for (let i = 0; i < chapters.length; i++) {
+            chapters[i].chapterNumber = i;
+        }
+        return chapters
     };
 
     const uploadImage = (image) => {
@@ -30,7 +39,7 @@ const ChapterTools = (props) => {
             <div className="d-block align-middle btn" onClick={() => {
                 removeImage()
             }}>
-                <img src={imgUrl} alt="image was here"/>
+                <img src={imgUrl} alt={imgUrl}/>
                 <p>Click to remove</p>
             </div>}
 

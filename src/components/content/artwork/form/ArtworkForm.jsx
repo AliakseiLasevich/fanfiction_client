@@ -9,7 +9,7 @@ import {
     requestGenres,
     requestTags,
     setArtworkToEdit,
-    submitArtwork, updateArtwork
+    postArtwork, updateArtwork
 } from "../../../../redux/artworkFormReducer";
 import GenresInput from "./GenresInput";
 import NameInput from "./NameInput";
@@ -41,15 +41,18 @@ const ArtworkForm = (props) => {
     const newChapters = useSelector(state => {
         return state.artworkFormReducer.chapters
     });
+    const userId = useSelector(state => {
+        return state.authReducer.currentUser.userId
+    });
 
     const onSubmit = (artwork) => {
         artwork.tags = convertTagsToList(tags);
         artwork.chapters = newChapters;
         artwork.likes = likes;
         if (artworkIdToEdit) {
-            dispatch(updateArtwork(artwork, artworkIdToEdit))
+            dispatch(updateArtwork(artwork, artworkIdToEdit, userId))
         } else {
-            dispatch(submitArtwork(artwork));
+            dispatch(postArtwork(artwork, userId));
         }
     };
     useEffect(() => {

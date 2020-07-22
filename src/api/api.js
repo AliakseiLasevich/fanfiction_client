@@ -1,7 +1,8 @@
 import * as axios from "axios";
 
 const instance = axios.create({
-    baseURL: "http://ec2-3-125-115-63.eu-central-1.compute.amazonaws.com:8080/webproject-0.0.1-SNAPSHOT/"
+    // baseURL: "http://ec2-3-125-115-63.eu-central-1.compute.amazonaws.com:8080/webproject-0.0.1-SNAPSHOT/"
+    baseURL: "http://localhost:8080/"
 });
 
 const getHeaders = (jwt) => {
@@ -44,33 +45,55 @@ export const usersAPI = {
     }
 };
 
-
-export const artworkAPI = {
-    postArtwork(artwork) {
-        return instance.post(`/users/${userId}/artworks`, artwork,  getHeaders(jwt))
-    },
+export const artworkPreviewAPI = {
     getArtworksPreviews(page = 1, limit = 4) {
-        return instance.get(`/artworksPreviews?page=${page}&limit=${limit}`)
+        return instance.get(`/api/artworksPreviews?page=${page}&limit=${limit}`)
     },
     getArtworksByUser(userId) {
-        return instance.get(`/users/${userId}/artworks`,  getHeaders(jwt))
+        return instance.get(`/api/artworksPreviews/${userId}`, getHeaders(jwt))
     },
+};
+
+
+export const artworkAPI = {
     getArtworkById(artworkId) {
-        return instance.get(`/artworks/${artworkId}`)
+        return instance.get(`/api/artworks/${artworkId}`)
     },
-    getArtworksPreviewsBySearch(textToSearch) {
-        return instance.get(`/search?search=${textToSearch}`)
-    },
-    getTags() {
-        return instance.get(`/tags`,  getHeaders(jwt))
+    postArtwork(artwork) {
+        return instance.post(`/api/artworks`, artwork, getHeaders(jwt))
     },
     getGenres() {
         return instance.get(`/genres`,  getHeaders(jwt))
     },
     deleteArtwork(artworkId) {
-        return instance.delete(`/artworks/${userId}/${artworkId}`, getHeaders(jwt))
+        return instance.delete(`/api/artworks/${artworkId}`, getHeaders(jwt))
     }
 };
+
+export const topArtworksAPI = {
+    getTopArtworks(limit) {
+        return instance.get(`/api/artworks/top/${limit}`)
+    }
+};
+
+export const searchAPI = {
+    getArtworksPreviewsBySearch(textToSearch) {
+        return instance.get(`/search?search=${textToSearch}`)
+    },
+};
+
+export const tagAPI = {
+    getTags() {
+        return instance.get(`/tags`, getHeaders(jwt))
+    },
+};
+
+export const genreAPI = {
+    getGenres() {
+        return instance.get(`/genres`, getHeaders(jwt))
+    },
+};
+
 
 export const likeApi = {
     getLike(userId, artworkId) {

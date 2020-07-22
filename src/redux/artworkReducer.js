@@ -1,4 +1,4 @@
-import {artworkAPI, likeApi} from "../api/api";
+import {artworkAPI, artworkPreviewAPI, likeApi, searchAPI} from "../api/api";
 
 const SET_ARTWORKS_PREVIEWS = "SET_ARTWORKS_PREVIEWS";
 const SET_USER_LIKES = "SET_USER_LIKES";
@@ -123,7 +123,7 @@ export const getUserLikes = (userId, artworkId) => {
 
 export const getArtworksPreviews = (page) => {
     return (dispatch) => {
-        artworkAPI.getArtworksPreviews(page)
+        artworkPreviewAPI.getArtworksPreviews(page)
             .then(response => {
                 dispatch(setArtworksPreviews(response.data.artworksPreviews));
                 dispatch(setPagesCount(response.data.pagesCount));
@@ -133,7 +133,7 @@ export const getArtworksPreviews = (page) => {
 
 export const getArtworksPreviewsByUserId = (userId) => {
     return (dispatch) => {
-        artworkAPI.getArtworksByUser(userId)
+        artworkPreviewAPI.getArtworksByUser(userId)
             .then(response => {
                 dispatch(setArtworksPreviews(response.data.artworksPreviews));
                 dispatch(setPagesCount(response.data.pagesCount));
@@ -143,7 +143,7 @@ export const getArtworksPreviewsByUserId = (userId) => {
 
 export const getArtworksPreviewsBySearch = (textToSearch) => {
     return (dispatch) => {
-        artworkAPI.getArtworksPreviewsBySearch(textToSearch)
+        searchAPI.getArtworksPreviewsBySearch(textToSearch)
             .then(response => {
                 dispatch(setArtworksPreviews(response.data));
             })
@@ -151,8 +151,12 @@ export const getArtworksPreviewsBySearch = (textToSearch) => {
 };
 
 export const deleteArtworkByIdAC = (artworkId, userId) => {
+    let requestModel = {
+        artworkId,
+        userId
+    };
     return (dispatch) => {
-        artworkAPI.deleteArtwork(artworkId)
+        artworkAPI.deleteArtwork(requestModel)
             .then(response => {
                 dispatch(getArtworksPreviewsByUserId(userId))
             })

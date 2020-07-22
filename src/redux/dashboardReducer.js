@@ -1,4 +1,4 @@
-import {artworkAPI} from "../api/api";
+import {artworkAPI, artworkPreviewAPI} from "../api/api";
 
 const SET_USER_ARTWORKS = "SET_USER_ARTWORKS";
 
@@ -31,7 +31,7 @@ export const setUserArtworks = (artworks) => {
 
 export const getArtworks = (userId) => {
     return (dispatch) => {
-        artworkAPI.getArtworksByUser(userId)
+        artworkPreviewAPI.getArtworksByUser(userId)
             .then(response => {
               dispatch(setUserArtworks(response.data.artworksPreviews));
 

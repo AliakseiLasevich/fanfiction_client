@@ -64,7 +64,7 @@ export class CommentsByWebSocket extends React.Component {
                 <Comments comments={this.state.comments}/>
 
                 <SockJsClient
-                    url={"http://localhost:8080/handler"}
+                    url={"http://ec2-3-125-115-63.eu-central-1.compute.amazonaws.com:8080/webproject-0.0.1-SNAPSHOT/handler"}
                     topics={this.state.topics}
                     onMessage={this.onMessageReceive}
                     onConnect={this.onConnect}

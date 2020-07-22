@@ -1,4 +1,4 @@
-import {artworkAPI, cloudinaryApi} from "../api/api";
+import {artworkAPI, cloudinaryApi, genreAPI, tagAPI} from "../api/api";
 
 const SET_ARTWORK_TO_EDIT = "SET_ARTWORK_TO_EDIT";
 const SET_ARTWORK_NAME = "SET_ARTWORK_NAME";
@@ -253,22 +253,30 @@ export const uploadImageToChapter = (files, chapterNumber) => {
     };
 };
 
-export const submitArtwork = (artwork) => {
+export const postArtwork = (artwork, userId) => {
+    let requestModel = {
+        ...artwork,
+        userId
+    };
     return (dispatch) => {
-        artworkAPI.postArtwork(artwork)
+        artworkAPI.postArtwork(requestModel)
             .then(response => dispatch(setSubmittedId(response.data.artworkId)));
     };
 };
-export const updateArtwork = (artwork, artworkId) => {
+export const updateArtwork = (artwork, artworkId, userId) => {
+    let requestModel = {
+        ...artwork,
+        userId
+    };
     return (dispatch) => {
-        artworkAPI.putArtwork(artwork, artworkId)
+        artworkAPI.putArtwork(requestModel, artworkId)
             .then(response => dispatch(setSubmittedId(response.data.artworkId)));
     };
 };
 
 export const requestTags = () => {
     return (dispatch) => {
-        artworkAPI.getTags()
+        tagAPI.getTags()
             .then(response => {
                 dispatch(setTags(response.data))
             });
@@ -277,7 +285,7 @@ export const requestTags = () => {
 
 export const requestGenres = () => {
     return (dispatch) => {
-        artworkAPI.getGenres()
+        genreAPI.getGenres()
             .then(response => {
                 dispatch(setGenres(response.data))
             });

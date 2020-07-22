@@ -78,19 +78,19 @@ export const topArtworksAPI = {
 
 export const searchAPI = {
     getArtworksPreviewsBySearch(textToSearch) {
-        return instance.get(`/search?search=${textToSearch}`)
+        return instance.get(`/api/search?search=${textToSearch}`)
     },
 };
 
 export const tagAPI = {
     getTags() {
-        return instance.get(`/tags`, getHeaders(jwt))
+        return instance.get(`/api/tags`, getHeaders(jwt))
     },
 };
 
 export const genreAPI = {
     getGenres() {
-        return instance.get(`/genres`, getHeaders(jwt))
+        return instance.get(`/api/genres`, getHeaders(jwt))
     },
 };
 

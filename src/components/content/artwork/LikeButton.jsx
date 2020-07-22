@@ -1,18 +1,28 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {FaThumbsUp} from "react-icons/fa";
 import style from "./LikeButton.module.css";
-import {useDispatch} from "react-redux";
-import {postLike} from "../../../redux/artworkReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {getUserLikes, postLike} from "../../../redux/artworkReducer";
 
 const LikeButton = (props) => {
 
     const dispatch = useDispatch();
-    const hasLike = (likes) => {
-        return likes?.find(like => like?.chapterNumber === props.chapterNumber)?.value
+
+    const userLikes = useSelector(state => {
+        return state.artworkReducer.userLikes;
+    });
+
+    useEffect(() => {
+        dispatch(getUserLikes(props.currentUser.userId, props.chapterId));
+    }, [dispatch, props.chapterId, props.currentUser.userId]);
+
+    const hasLike = () => {
+        let s = userLikes?.find(like => like?.chapterId === props.chapterId)?.value;
+        return s;
     };
 
     const setLikeToChapter = () => {
-        dispatch(postLike(props.currentUser.userId, props.artworkId, props.chapterNumber));
+        dispatch(postLike(props.currentUser.userId, props.chapterId));
     };
 
 

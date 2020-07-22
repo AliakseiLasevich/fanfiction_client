@@ -14,8 +14,8 @@ let initialState = {
         chapters: [],
         averageRating: 0,
         userRating: null,
-        userLikes: null
-    }
+    },
+    userLikes: []
 };
 
 const artworkReducer = (state = initialState, action) => {
@@ -37,16 +37,14 @@ const artworkReducer = (state = initialState, action) => {
 
         case SET_CURRENT_ARTWORK:
             return {
-                ...state, currentArtwork: action.currentArtwork
+                ...state,
+                currentArtwork: action.currentArtwork
             };
 
         case SET_USER_LIKES:
             return {
                 ...state,
-                currentArtwork: {
-                    ...state.currentArtwork,
-                    userLikes: action.userLikes
-                }
+                userLikes: [...state.userLikes, action.like]
             };
 
         default:
@@ -96,25 +94,27 @@ export const getArtworkById = (artworkId) => {
     }
 };
 
-export const setUserLikes = (userLikes) => {
+export const setUserLikes = (like) => {
     return {
         type: SET_USER_LIKES,
-        userLikes
+        like
     }
 };
-export const postLike = (userId, artworkId, chapterNumber) => {
-    const like = {like: true}
+export const postLike = (userId, chapterId) => {
+    const requestModel = {
+        userId, like: true
+    };
     return (dispatch) => {
-        likeApi.postLike(userId, artworkId, chapterNumber, like)
+        likeApi.postLike(chapterId, requestModel)
             .then(response => {
-                dispatch(getUserLikes(userId, artworkId));
+                dispatch(getUserLikes(userId, chapterId));
             })
     }
 };
 
-export const getUserLikes = (userId, artworkId) => {
+export const getUserLikes = (userId, chapterId) => {
     return (dispatch) => {
-        likeApi.getLike(userId, artworkId)
+        likeApi.getLike(userId, chapterId)
             .then(response => {
                 dispatch(setUserLikes(response.data))
             })

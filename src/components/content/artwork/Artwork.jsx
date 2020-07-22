@@ -18,12 +18,8 @@ const Artwork = (props) => {
 
     useEffect(() => {
         dispatch(getArtworkById(openedArtwork));
-        dispatch(getUserLikes(currentUser.userId, openedArtwork));
     }, [currentUser.userId, openedArtwork]);
 
-    const likes = useSelector(state => {
-        return state.artworkReducer.currentArtwork.userLikes
-    });
 
     const currentArtwork = useSelector(state => {
         return state.artworkReducer.currentArtwork
@@ -41,8 +37,7 @@ const Artwork = (props) => {
             </div>
             {Object.keys(currentUser).length !== 0 &&
             <div className="row justify-content-center">
-                <LikeButton likes={likes}
-                            chapterNumber={chapter.chapterNumber}
+                <LikeButton chapterId={chapter.chapterId}
                             artworkId={currentArtwork.artworkId}
                             currentUser={currentUser}/>
             </div>

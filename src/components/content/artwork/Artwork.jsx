@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getArtworkById, getUserLikes} from "../../../redux/artworkReducer";
+import {getArtworkById} from "../../../redux/artworkReducer";
 import {CommentsByWebSocket} from "../comments/CommentsByWebSocket";
 import Chapter from "./Chapter";
 import LikeButton from "./LikeButton";
 import RatingComponent from "./RatingComponent";
+import TagsList from "./TagsList";
 
 const Artwork = (props) => {
 
@@ -55,6 +56,10 @@ const Artwork = (props) => {
 
             {Object.keys(currentUser).length !== 0 && <RatingComponent/>}
 
+            <div className="row justify-content-center m-1">
+                <TagsList tags={currentArtwork.tags}/>
+            </div>
+
             {currentArtwork.authorId === currentUser.userId || currentUser.roles?.some(role => role.name === "ROLE_ADMIN") ?
                 <div className="col btn btn-light"
                      onClick={() => setArtworkToEdit(currentArtwork.artworkId)}>Edit current artwork</div> : null
@@ -63,6 +68,8 @@ const Artwork = (props) => {
             <CommentsByWebSocket openedArtwork={openedArtwork}/>
 
             {artworkToEdit && <Redirect to={`/artwork-form/${artworkToEdit}`}/>}
+
+
         </div>
     )
 };

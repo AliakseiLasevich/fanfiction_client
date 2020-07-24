@@ -5,7 +5,6 @@ import {Route, Switch, withRouter} from "react-router-dom";
 import LoginPage from "./components/auth/LoginPage";
 import {useDispatch} from "react-redux";
 import AdminPanel from "./components/adminPanel/AdminPanel";
-import Content from "./components/content/Content";
 import {authorizeUser} from "./redux/authReducer";
 import ArtworkForm from "./components/content/artwork/form/ArtworkForm";
 import Dashboard from "./components/dashboard/Dashboard";
@@ -13,6 +12,7 @@ import PageNotFound from "./components/common/PageNotFound";
 import Artwork from "./components/content/artwork/Artwork";
 import SearchResults from "./components/content/search/SearchResults";
 import EmailVerificationResult from "./components/auth/EmailVerificationResult";
+import MainPageArtworksPreviews from "./components/content/MainPageArtworksPreviews";
 
 
 function App() {
@@ -36,10 +36,11 @@ function App() {
                 <Route path="/login" render={() => <LoginPage/>}/>
                 <Route path="/dashboard" render={() => <Dashboard/>}/>
                 <Route path="/admin-panel" render={() => <AdminPanel/>}/>
-                <Route exact path={["/", "/artworks/:page"]} render={() => <Content/>}/>
+                <Route exact path={["/", "/artworks/:page"]} component={MainPageArtworksPreviews}/>
                 <Route path="/artwork-form/:artworkId?" component={ArtworkForm}/>
                 <Route path="/artworks/id/:artworkId" component={Artwork}/> }/>
-                <Route exact path="/search/:textToSearch" render={() => <SearchResults/>}/>
+                <Route exact path="/search/text/:textToSearch" component={SearchResults}/>
+                <Route exact path="/search/tag/:tagToSearch" component={SearchResults}/>
                 <Route component={PageNotFound}/>
             </Switch>
         </div>

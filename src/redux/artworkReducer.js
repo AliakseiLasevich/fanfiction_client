@@ -150,6 +150,15 @@ export const getArtworksPreviewsBySearch = (textToSearch) => {
     }
 };
 
+export const requestArtworkPreviewsByTag = (tag) => {
+    return (dispatch) => {
+        artworkPreviewAPI.getArtworksPreviewsByTag(tag)
+            .then(response => {
+                dispatch(setArtworksPreviews(response.data));
+            })
+    }
+};
+
 export const deleteArtworkByIdAC = (artworkId, userId) => {
     let requestModel = {
         artworkId,

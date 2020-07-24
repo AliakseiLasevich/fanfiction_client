@@ -1,44 +1,34 @@
 import React, {useEffect} from "react";
-import {useRouteMatch} from "react-router-dom";
-import {getArtworksPreviewsBySearch} from "../../../redux/artworkReducer";
+import {getArtworksPreviewsBySearch, requestArtworkPreviewsByTag} from "../../../redux/artworkReducer";
 import {useDispatch, useSelector} from "react-redux";
-import ArtworkPreview from "../artwork/ArtworkPreview";
+import ArtworkPreviewsList from "../artwork/ArtworkPreviewsList";
 
 const SearchResults = (props) => {
     const dispatch = useDispatch();
-    const {path} = useRouteMatch();
-    let match = useRouteMatch({
-        path: path,
-        strict: true,
-        sensitive: true
-    });
-    const textToSearch = match.params.textToSearch;
+    const textToSearch = props.match.params.textToSearch;
+    const tagToSearch = props.match.params.tagToSearch;
 
     useEffect(() => {
         dispatch(getArtworksPreviewsBySearch(textToSearch));
     }, [textToSearch]);
 
+    useEffect(() => {
+        dispatch(requestArtworkPreviewsByTag(tagToSearch));
+    }, [tagToSearch]);
+
     const artworksPreviews = useSelector(state => {
         return state.artworkReducer.artworksPreviews;
     });
 
-    const artworkComponents = artworksPreviews?.map(artwork => <ArtworkPreview key={artwork?.artworkId}
-                                                                              artworkId={artwork?.artworkId}
-                                                                              authorId={artwork?.authorId}
-                                                                              authorName={artwork?.authorName}
-                                                                              name={artwork?.name}
-                                                                              summary={artwork?.summary}
-
-
-    />);
     return (
         <div>
             <div className="row justify-content-center m-1 p-1">
-                <h2>Search results of "{textToSearch}":</h2>
+                {textToSearch && <h2>Search results of "{textToSearch}":</h2>}
+                {tagToSearch && <h2>Search results of tag "{tagToSearch}":</h2>}
             </div>
             <div>
                 {artworksPreviews.length > 0 ?
-                    artworkComponents :
+                    <ArtworkPreviewsList artworksPreviews={artworksPreviews}/> :
                     <div class="alert alert-warning text-center">
                         <strong>No results</strong>
                     </div>}

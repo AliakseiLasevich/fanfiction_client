@@ -19,7 +19,7 @@ const Search = (props) => {
                        ref={register({required: "Input text please"})}/>
             </form>
 
-            {textToSearch && <Redirect to={`/search/${textToSearch}`}/>}
+            {textToSearch && <Redirect to={`/search/text/${textToSearch}`}/>}
         </div>
     )
 };

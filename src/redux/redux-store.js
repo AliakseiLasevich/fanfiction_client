@@ -5,6 +5,7 @@ import authReducer from "./authReducer";
 import artworkFormReducer from "./artworkFormReducer";
 import artworkReducer from "./artworkReducer";
 import dashboardReducer from "./dashboardReducer";
+import tagsReducer from "./tagsReducer";
 
 
 let reducers = combineReducers({
@@ -12,7 +13,8 @@ let reducers = combineReducers({
     usersReducer: usersReducer,
     artworkReducer: artworkReducer,
     artworkFormReducer: artworkFormReducer,
-    dashboardReducer: dashboardReducer
+    dashboardReducer: dashboardReducer,
+    tagsReducer: tagsReducer
 });
 
 const composeEnhancers = (process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null) || compose;

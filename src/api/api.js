@@ -52,6 +52,9 @@ export const artworkPreviewAPI = {
     getArtworksByUser(userId) {
         return instance.get(`/api/artworksPreviews/${userId}`, getHeaders(jwt))
     },
+    getArtworksPreviewsByTag(tag) {
+        return instance.get(`/api/artworks/tags/${tag}`)
+    },
 };
 
 
@@ -67,7 +70,7 @@ export const artworkAPI = {
     },
     deleteArtwork(artworkId) {
         return instance.delete(`/api/artworks/${artworkId}`, getHeaders(jwt))
-    }
+    },
 };
 
 export const topArtworksAPI = {
@@ -80,12 +83,16 @@ export const searchAPI = {
     getArtworksPreviewsBySearch(textToSearch) {
         return instance.get(`/api/search?search=${textToSearch}`)
     },
+
 };
 
 export const tagAPI = {
     getTags() {
         return instance.get(`/api/tags`, getHeaders(jwt))
     },
+    getCommonTags(){
+        return instance.get(`/api/tags/common`)
+    }
 };
 
 export const genreAPI = {

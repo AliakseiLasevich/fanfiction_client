@@ -1,13 +1,14 @@
 import React from "react";
 import TopArtworks from "./TopArtworks";
-import TagCloud from "./TagCloud";
+import TagsCloud from "./TagsCloud";
+
 
 const Sidebar = () => {
 
     return(
         <div className="d-flex flex-column row">
            <TopArtworks/>
-           <TagCloud/>
+           <TagsCloud/>
         </div>
     )
 };

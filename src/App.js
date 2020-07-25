@@ -10,7 +10,7 @@ import ArtworkForm from "./components/content/artwork/form/ArtworkForm";
 import Dashboard from "./components/dashboard/Dashboard";
 import PageNotFound from "./components/common/PageNotFound";
 import Artwork from "./components/content/artwork/Artwork";
-import SearchResults from "./components/content/search/SearchResults";
+import SearchResults from "./components/search/SearchResults";
 import EmailVerificationResult from "./components/auth/EmailVerificationResult";
 import MainPageArtworksPreviews from "./components/content/MainPageArtworksPreviews";
 
@@ -38,7 +38,7 @@ function App() {
                 <Route path="/admin-panel" render={() => <AdminPanel/>}/>
                 <Route exact path={["/", "/artworks/:page"]} component={MainPageArtworksPreviews}/>
                 <Route path="/artwork-form/:artworkId?" component={ArtworkForm}/>
-                <Route path="/artworks/id/:artworkId" component={Artwork}/> }/>
+                <Route exact path="/artworks/id/:artworkId" component={Artwork}/> }/>
                 <Route exact path="/search/text/:textToSearch" component={SearchResults}/>
                 <Route exact path="/search/tag/:tagToSearch" component={SearchResults}/>
                 <Route component={PageNotFound}/>

@@ -27,7 +27,7 @@ const Artwork = (props) => {
     });
 
     let chapters = currentArtwork.chapters?.map(chapter =>
-        <div className="container border m-1 p-1">
+        <div className="container border m-1 p-1" key={chapter.id}>
             <div className="row">
                 <Chapter chapterId={chapter.id}
                          chapterNumber={chapter.chapterNumber + 1}

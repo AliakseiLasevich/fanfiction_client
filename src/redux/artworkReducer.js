@@ -1,9 +1,10 @@
-import {artworkAPI, artworkPreviewAPI, likeApi, searchAPI} from "../api/api";
+import {artworkAPI, artworkPreviewAPI, likeApi, ratingApi, searchAPI} from "../api/api";
 
 const SET_ARTWORKS_PREVIEWS = "SET_ARTWORKS_PREVIEWS";
 const SET_USER_LIKES = "SET_USER_LIKES";
 const SET_PAGES_COUNT = "SET_PAGES_COUNT";
 const SET_CURRENT_ARTWORK = "SET_CURRENT_ARTWORK";
+const SET_ARTWORK_AVERAGE_RATING = "SET_ARTWORK_AVERAGE_RATING";
 const RESET_STATE = "RESET_STATE";
 
 let initialState = {
@@ -15,7 +16,8 @@ let initialState = {
         averageRating: 0,
         userRating: null,
     },
-    userLikes: []
+    userLikes: [],
+    averageRatings: []
 };
 
 const artworkReducer = (state = initialState, action) => {
@@ -45,6 +47,12 @@ const artworkReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userLikes: [...state.userLikes, action.like]
+            };
+
+        case SET_ARTWORK_AVERAGE_RATING:
+            return {
+                ...state,
+                averageRatings: [...state.averageRatings, action.rating]
             };
 
         default:
@@ -100,6 +108,14 @@ export const setUserLikes = (like) => {
         like
     }
 };
+
+export const setAverageRating = (rating) => {
+    return {
+        type: SET_ARTWORK_AVERAGE_RATING,
+        rating
+    }
+};
+
 export const postLike = (userId, chapterId) => {
     const requestModel = {
         userId, like: true
@@ -172,5 +188,11 @@ export const deleteArtworkByIdAC = (artworkId, userId) => {
     }
 };
 
+export const requestAverageArtworkRating = (artworkId) => async (dispatch) => {
+    let response = await ratingApi.getAverageRating(artworkId);
+    if (response.status === 200) {
+        dispatch(setAverageRating(response.data));
+    }
+};
 
 export default artworkReducer;

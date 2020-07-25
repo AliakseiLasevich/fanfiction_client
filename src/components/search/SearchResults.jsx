@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
-import {getArtworksPreviewsBySearch, requestArtworkPreviewsByTag} from "../../../redux/artworkReducer";
+import {getArtworksPreviewsBySearch, requestArtworkPreviewsByTag} from "../../redux/artworkReducer";
 import {useDispatch, useSelector} from "react-redux";
-import ArtworkPreviewsList from "../artwork/ArtworkPreviewsList";
+import ArtworkPreviewsList from "../content/artwork/ArtworkPreviewsList";
 
 const SearchResults = (props) => {
     const dispatch = useDispatch();
@@ -9,12 +9,15 @@ const SearchResults = (props) => {
     const tagToSearch = props.match.params.tagToSearch;
 
     useEffect(() => {
-        dispatch(getArtworksPreviewsBySearch(textToSearch));
-    }, [textToSearch]);
+        if (tagToSearch) {
+            dispatch(requestArtworkPreviewsByTag(tagToSearch));
+        }
+        if (textToSearch) {
+            dispatch(getArtworksPreviewsBySearch(textToSearch));
+        }
 
-    useEffect(() => {
-        dispatch(requestArtworkPreviewsByTag(tagToSearch));
-    }, [tagToSearch]);
+    }, [textToSearch, tagToSearch, dispatch]);
+
 
     const artworksPreviews = useSelector(state => {
         return state.artworkReducer.artworksPreviews;
@@ -29,7 +32,7 @@ const SearchResults = (props) => {
             <div>
                 {artworksPreviews.length > 0 ?
                     <ArtworkPreviewsList artworksPreviews={artworksPreviews}/> :
-                    <div class="alert alert-warning text-center">
+                    <div className="alert alert-warning text-center">
                         <strong>No results</strong>
                     </div>}
             </div>

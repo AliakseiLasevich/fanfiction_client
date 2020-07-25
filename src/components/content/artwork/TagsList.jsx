@@ -4,11 +4,10 @@ import {NavLink} from "react-router-dom";
 const TagsList = (props) => {
 
     const tags = props.tags?.map(tag => <NavLink to={`/search/tag/${tag.name}`} key={tag.name}
-                                                 className="mx-1 border bg-secondary text-light">{tag.name}</NavLink>);
+                                                 className="mx-1 px-1 border bg-secondary text-light">{tag.name}</NavLink>);
     return (
         <>
            Tags: {tags}
-
         </>
     )
 };

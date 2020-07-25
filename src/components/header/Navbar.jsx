@@ -3,7 +3,7 @@ import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {FaDoorOpen, FaKey, FaUserCircle} from "react-icons/fa";
 import {logoutAC, removeLocalStorageProps, setLogged} from "../../redux/authReducer";
-import Search from "../content/search/Search";
+import Search from "../search/Search";
 
 const Navbar = () => {
     const dispatch = useDispatch();
@@ -34,8 +34,8 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="navbar navbar-expand-sm navbar-light bg-warning row">
-            <NavLink className="navbar-brand col" to="/">Fanfic</NavLink>
+        <nav className="navbar navbar-expand-sm navbar-light bg-dark row">
+            <NavLink className="navbar-brand text-light col" to="/">Fanfic</NavLink>
 
             <div className="collapse navbar-collapse" id="navbarNav">
 
@@ -43,22 +43,22 @@ const Navbar = () => {
                     <Search/>
                 </div>
 
-                <ul className="navbar-nav ml-auto ">
+                <ul className="navbar-nav ml-auto">
 
                     {!logged &&
                     <li className="nav-item">
-                        <NavLink className="nav-link" to="/register">
+                        <NavLink className="nav-link text-light" to="/register">
                             <span className="p-1"><FaKey/></span>Register</NavLink>
                     </li>}
 
                     {!logged && <li className="nav-item">
-                        <NavLink className="nav-link" to="/login">
+                        <NavLink className="nav-link text-light" to="/login">
                             <span className="p-1"><FaDoorOpen/></span>Login</NavLink>
                     </li>}
 
 
                     {logged && <li className="nav-item dropdown">
-                        <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown">
+                        <a href="#" className="nav-link dropdown-toggle text-light" data-toggle="dropdown">
                             <span className="p-1"><FaUserCircle/></span>
                             {currentUser.nickName}
                         </a>
@@ -73,7 +73,7 @@ const Navbar = () => {
 
                             <button onClick={() => {
                             }} className="dropdown-item">
-                                <NavLink className="btn btn-sm" to="/dashboard">
+                                <NavLink className="btn btn-sm" to="/dashboard/user-account">
                                     Dashboard
                                 </NavLink>
                             </button>

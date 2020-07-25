@@ -1,7 +1,7 @@
 import * as axios from "axios";
 
 const instance = axios.create({
-    // baseURL: "http://ec2-3-125-115-63.eu-central-1.compute.amazonaws.com:8080/webproject-0.0.1-SNAPSHOT/"
+    // baseURL: "http://ec2-3-125-115-63.eu-central-1.compute.amazonaws.com:8080/fanfic/"
     baseURL: "http://localhost:8080/"
 });
 
@@ -90,7 +90,7 @@ export const tagAPI = {
     getTags() {
         return instance.get(`/api/tags`, getHeaders(jwt))
     },
-    getCommonTags(){
+    getCommonTags() {
         return instance.get(`/api/tags/common`)
     }
 };
@@ -112,6 +112,12 @@ export const likeApi = {
     putLike(userId, artworkId, chapterNumber, like) {
         return instance.put(`/likes/${userId}/${artworkId}/${chapterNumber}`, like,  getHeaders(jwt))
     },
+};
+
+export const ratingApi = {
+    getAverageRating(artworkId) {
+        return instance.get(`/api/ratings/artworks/${artworkId}/average`)
+    }
 };
 
 export const cloudinaryApi = {

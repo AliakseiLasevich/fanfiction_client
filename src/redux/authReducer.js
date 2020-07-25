@@ -85,6 +85,9 @@ export const logoutAC = () => {
 
 export const login = (user) => {
     return (dispatch) => {
+        if (user === undefined) {
+            return;
+        }
         usersAPI.login(user)
             .then(response => {
                     dispatch(getUserById(response.headers.userid, response.headers.authorization))
@@ -100,6 +103,9 @@ export const login = (user) => {
 };
 
 export const authorizeUser = (userId, jwt) => (dispatch) => {
+    if (userId === undefined) {
+        return;
+    }
     let promise = dispatch(getUserById(userId, jwt));
     promise.then(user => {
         dispatch(setCurrentUser(user));

@@ -74,7 +74,7 @@ export const artworkAPI = {
 };
 
 export const topArtworksAPI = {
-    getTopArtworks(limit) {
+    getTopArtworks(limit = 5) {
         return instance.get(`/api/artworks/top/${limit}`)
     }
 };

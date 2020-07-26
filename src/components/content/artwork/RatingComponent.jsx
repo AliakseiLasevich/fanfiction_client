@@ -47,7 +47,7 @@ const RatingComponent = (props) => {
                         />
                     </div>
                     <div className="row justify-content-center">
-                        Average: {currentAverageRating}
+                        Average: {parseFloat(currentAverageRating).toFixed(1)}
                     </div>
                 </div>, [currentAverageRating, submitRating, userRating])}
         </>

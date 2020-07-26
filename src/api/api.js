@@ -117,6 +117,12 @@ export const likeApi = {
 export const ratingApi = {
     getAverageRating(artworkId) {
         return instance.get(`/api/ratings/artworks/${artworkId}/average`)
+    },
+    getRatingByUserAndArtwork(userId, artworkid) {
+        return instance.get(`/api/ratings/artworks/${artworkid}/users/${userId}`, getHeaders(jwt))
+    },
+    postRating(artworkId, userId, rating) {
+        return instance.post(`/api/ratings/artworks/${artworkId}/users/${userId}`, {value: rating}, getHeaders(jwt))
     }
 };
 

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getArtworkById} from "../../../redux/artworkReducer";
+import {getArtworkById, requestAverageArtworkRatings} from "../../../redux/artworkReducer";
 import {CommentsByWebSocket} from "../comments/CommentsByWebSocket";
 import Chapter from "./Chapter";
 import LikeButton from "./LikeButton";
@@ -54,7 +54,8 @@ const Artwork = (props) => {
 
             <div className="row">{chapters}</div>
 
-            {Object.keys(currentUser).length !== 0 && <RatingComponent/>}
+            {Object.keys(currentUser).length !== 0 && <RatingComponent artworkId={openedArtwork}
+                                                                       userId={currentUser.userId}/>}
 
             <div className="row justify-content-center m-1">
                 <TagsList tags={currentArtwork.tags}/>

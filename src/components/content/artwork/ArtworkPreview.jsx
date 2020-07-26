@@ -5,7 +5,7 @@ import TagsList from "./TagsList";
 import Rating from "@material-ui/lab/Rating";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import {useDispatch, useSelector} from "react-redux";
-import {requestAverageArtworkRating} from "../../../redux/artworkReducer";
+import {requestAverageArtworkRatings} from "../../../redux/artworkReducer";
 
 const ArtworkPreview = (props) => {
 
@@ -17,7 +17,7 @@ const ArtworkPreview = (props) => {
     });
 
     useEffect(() => {
-        dispatch(requestAverageArtworkRating(props.artworkId));
+        dispatch(requestAverageArtworkRatings(props.artworkId));
     }, [dispatch, props.artworkId]);
 
     useEffect(() => {
